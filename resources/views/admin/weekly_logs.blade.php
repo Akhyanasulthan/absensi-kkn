@@ -98,12 +98,12 @@
                         <td style="padding: 1rem; color: var(--text-muted);">{{ $log->division }}</td>
                         <td style="padding: 1rem;">
                             <span style="background-color: var(--success-light); color: var(--success); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500;">
-                                {{ $log->check_in ? \Carbon\Carbon::parse($log->check_in)->format('H:i:s') : '-' }}
+                                {{ $log->check_in ? 'Hadir - ' . \Carbon\Carbon::parse($log->check_in)->format('H:i:s') : '-' }}
                             </span>
                         </td>
                         <td style="padding: 1rem;">
                             <span style="{{ $log->check_out ? 'background-color: var(--primary-light); color: var(--primary);' : 'background-color: #f1f5f9; color: var(--text-muted);' }} padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500;">
-                                {{ $log->check_out ? \Carbon\Carbon::parse($log->check_out)->format('H:i:s') : '-' }}
+                                {{ $log->check_out ? 'Pulang - ' . \Carbon\Carbon::parse($log->check_out)->format('H:i:s') : '-' }}
                             </span>
                         </td>
                         <td style="padding: 1rem;">
