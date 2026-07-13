@@ -33,8 +33,8 @@
         
         <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end; flex: 1;">
             <!-- Select Date -->
-            <div style="flex: 1; min-width: 280px;">
-                <label for="date-select" class="form-label" style="font-weight: 600;">Pilih Tanggal Evaluasi</label>
+            <div style="flex: 1; min-width: 240px; max-width: 320px;">
+                <label for="date-select" class="form-label" style="font-weight: 700; color: var(--bg-sidebar);">Pilih Tanggal Evaluasi</label>
                 <input type="date" name="date" id="date-select" class="form-input" style="background-color: white;" value="{{ $selectedDate }}" max="{{ \Carbon\Carbon::now('Asia/Jakarta')->toDateString() }}">
             </div>
             
@@ -59,16 +59,16 @@
 </div>
 
 <!-- Logs Data Table -->
-<div class="glass-card" style="padding: 2rem; border-radius: var(--radius-lg);">
-    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+<div class="glass-card" style="padding: 0; overflow: hidden;">
+    <div style="padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); background: rgba(255,255,255,0.5);">
         <div>
-            <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--bg-sidebar);">Data Kehadiran</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.1rem;">Menampilkan {{ $attendances->count() }} data pada tanggal {{ \Carbon\Carbon::parse($selectedDate)->translatedFormat('l, d M Y') }}</p>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">Data Kehadiran <span style="color: var(--primary);">({{ $attendances->count() }} Data)</span></h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">Menampilkan log absensi pada tanggal <strong style="color: var(--text-main);">{{ \Carbon\Carbon::parse($selectedDate)->translatedFormat('l, d M Y') }}</strong></p>
         </div>
     </div>
 
-    <div class="table-container">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+    <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+        <table style="width: 100%; border-collapse: separate; border-spacing: 0; text-align: left;">
             <thead>
                 <tr style="background-color: #f8fafc; border-bottom: 1px solid var(--border-color);">
                     <th style="padding: 1rem; font-weight: 600; color: var(--text-muted);">Tanggal</th>
@@ -82,7 +82,7 @@
             </thead>
             <tbody>
                 @forelse ($attendances as $log)
-                    <tr style="border-bottom: 1px solid var(--border-color); transition: background-color 0.15s ease;">
+                    <tr>
                         <td style="padding: 1rem; color: var(--bg-sidebar); font-weight: 600;">
                             {{ \Carbon\Carbon::parse($log->date)->translatedFormat('d M Y') }}
                         </td>
@@ -135,10 +135,10 @@
 </div>
 
 <!-- Manual Attendance Modal -->
-<div id="manual-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 50; align-items: center; justify-content: center; padding: 1rem;">
-    <div style="background: white; width: 100%; max-width: 500px; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+<div id="manual-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1100; align-items: center; justify-content: center; padding: 1rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="background: white; width: 100%; max-width: 500px; padding: 2.5rem; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.6rem; letter-spacing: -0.02em;">
                 <i data-lucide="user-check" style="color: var(--primary); width: 22px; height: 22px;"></i> Tambah Absen Manual
             </h3>
             <button type="button" onclick="closeManualModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
@@ -200,12 +200,20 @@
     
     function openManualModal() {
         manualModal.style.display = 'flex';
+        setTimeout(() => {
+            manualModal.style.opacity = '1';
+            manualModal.querySelector('.glass-card').style.transform = 'scale(1)';
+        }, 10);
         // Re-init lucide icons in case they didn't render inside the hidden modal
         if(typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function closeManualModal() {
-        manualModal.style.display = 'none';
+        manualModal.style.opacity = '0';
+        manualModal.querySelector('.glass-card').style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            manualModal.style.display = 'none';
+        }, 300);
     }
 
     // Close modal when clicking outside
