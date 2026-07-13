@@ -174,36 +174,21 @@ class AdminController extends Controller implements HasMiddleware
     }
 
     /**
-     * Weekly Attendance Logs View.
+     * Daily Attendance Logs View.
      */
     public function weeklyLogs(Request $request)
     {
-        // 1. Build weekly list options (12 weeks range)
         $now = Carbon::now('Asia/Jakarta');
-        $weeks = [];
-        for ($i = 0; $i < 12; $i++) {
-            $start = $now->copy()->startOfWeek()->subWeeks($i);
-            $end = $now->copy()->endOfWeek()->subWeeks($i);
-            $weeks[] = [
-                'start' => $start->toDateString(),
-                'end' => $end->toDateString(),
-                'label' => "Minggu " . $start->isoWeek() . " (" . $start->translatedFormat('d M') . " - " . $end->translatedFormat('d M Y') . ")",
-            ];
-        }
+        $selectedDate = $request->get('date', $now->toDateString());
 
-        // 2. Determine selected week
-        $selectedStart = $request->get('start', $weeks[0]['start']);
-        $selectedEnd = $request->get('end', $weeks[0]['end']);
-
-        // 3. Fetch records
-        $attendances = Attendance::whereBetween('date', [$selectedStart, $selectedEnd])
-            ->orderBy('date', 'desc')
+        // Fetch records
+        $attendances = Attendance::where('date', $selectedDate)
             ->orderBy('name', 'asc')
             ->get();
 
         $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
 
-        return view('admin.weekly_logs', compact('weeks', 'selectedStart', 'selectedEnd', 'attendances', 'students'));
+        return view('admin.weekly_logs', compact('selectedDate', 'attendances', 'students'));
     }
 
     /**
@@ -268,20 +253,17 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function exportExcel(Request $request)
     {
-        $start = $request->get('start');
-        $end = $request->get('end');
+        $date = $request->get('date');
 
-        if (!$start || !$end) {
-            return redirect()->back()->with('error', 'Pilih rentang tanggal terlebih dahulu.');
+        if (!$date) {
+            return redirect()->back()->with('error', 'Pilih tanggal terlebih dahulu.');
         }
 
-        $attendances = Attendance::whereBetween('date', [$start, $end])
-            ->orderBy('date', 'desc')
+        $attendances = Attendance::where('date', $date)
             ->orderBy('name', 'asc')
             ->get();
 
-        $weekLabel = Carbon::parse($start)->isoWeek();
-        return Excel::download(new AttendanceExport($attendances), "laporan_absensi_minggu_{$weekLabel}.xlsx");
+        return Excel::download(new AttendanceExport($attendances), "laporan_absensi_{$date}.xlsx");
     }
 
     /**
@@ -289,25 +271,22 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function exportPdf(Request $request)
     {
-        $start = $request->get('start');
-        $end = $request->get('end');
+        $date = $request->get('date');
 
-        if (!$start || !$end) {
-            return redirect()->back()->with('error', 'Pilih rentang tanggal terlebih dahulu.');
+        if (!$date) {
+            return redirect()->back()->with('error', 'Pilih tanggal terlebih dahulu.');
         }
 
-        $attendances = Attendance::whereBetween('date', [$start, $end])
-            ->orderBy('date', 'asc')
+        $attendances = Attendance::where('date', $date)
             ->orderBy('name', 'asc')
             ->get();
 
         $kknName = Setting::getValue('kkn_name', 'KKN Posko');
-        $weekLabel = Carbon::parse($start)->isoWeek();
 
-        $pdf = Pdf::loadView('exports.attendance_pdf', compact('attendances', 'start', 'end', 'kknName', 'weekLabel'));
+        $pdf = Pdf::loadView('exports.attendance_pdf', compact('attendances', 'date', 'kknName'));
 
         // Output to browser or download
-        return $pdf->download("laporan_absensi_minggu_{$weekLabel}.pdf");
+        return $pdf->download("laporan_absensi_{$date}.pdf");
     }
 
     /**
