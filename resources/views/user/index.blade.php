@@ -3,12 +3,12 @@
 @section('title', 'Absensi Mahasiswa')
 
 @section('content')
-<div style="margin-bottom: 2.5rem; text-align: center;">
-    <span class="badge" style="background-color: var(--primary-light); color: var(--primary); margin-bottom: 1rem;">
+<div style="margin-bottom: 2.5rem; text-align: center; margin-top: 1rem;">
+    <span class="badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; margin-bottom: 1rem; padding: 0.5rem 1rem; font-size: 0.85rem; box-shadow: var(--shadow-glow);">
         KKN Geofence Attendance
     </span>
-    <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; letter-spacing: -0.04em;">Presensi KKN Digital</h1>
-    <p style="color: var(--text-muted); font-size: 1rem; margin-top: 0.5rem;">Silakan pilih nama Anda dan lakukan absensi.</p>
+    <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--bg-sidebar), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Presensi Digital</h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem; margin-top: 0.5rem; font-weight: 500;">Silakan pilih nama Anda dan lakukan absensi.</p>
 </div>
 
 <!-- Barcode/Token Detection Status Widget -->
@@ -30,23 +30,23 @@
 @endif
 
 <!-- GPS/Geofence Status Widget -->
-<div class="glass-card" style="padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
-    <div style="display: flex; align-items: center; gap: 1rem;">
-        <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
-            <div id="gps-indicator" style="width: 12px; height: 12px; background-color: var(--warning); border-radius: 50%; z-index: 2;"></div>
-            <div id="gps-pulse" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--warning); border-radius: 50%; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; opacity: 0.5;"></div>
+<div class="glass-card" style="padding: 1.5rem; border-radius: var(--radius-xl); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
+            <div id="gps-indicator" style="width: 14px; height: 14px; background-color: var(--warning); border-radius: 50%; z-index: 2; box-shadow: 0 0 10px var(--warning);"></div>
+            <div id="gps-pulse" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--warning); border-radius: 50%; animation: pulse-gps 2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; opacity: 0.6;"></div>
         </div>
         <div>
-            <div id="gps-status-title" style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">Mendeteksi Lokasi GPS...</div>
-            <div id="gps-status-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.1rem;">Izinkan akses GPS pada browser Anda.</div>
+            <div id="gps-status-title" style="font-weight: 800; font-size: 1.05rem; color: var(--text-main); letter-spacing: -0.01em;">Mendeteksi GPS...</div>
+            <div id="gps-status-desc" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.15rem; font-weight: 500;">Izinkan akses lokasi pada browser.</div>
         </div>
     </div>
-    <div style="display: flex; gap: 0.75rem; align-items: center;">
-        <div id="gps-distance-badge" class="badge" style="display: none; background-color: #f1f5f9; color: var(--text-main); font-weight: 700;">
+    <div style="display: flex; gap: 0.85rem; align-items: center;">
+        <div id="gps-distance-badge" class="badge" style="display: none; background-color: #f1f5f9; color: var(--text-main); font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.85rem;">
             -
         </div>
-        <button type="button" onclick="refreshLocation()" class="btn btn-outline" style="padding: 0.5rem; border-radius: var(--radius-sm);" title="Perbarui Lokasi GPS">
-            <i data-lucide="refresh-cw" style="width: 18px; height: 18px; color: var(--text-muted);"></i>
+        <button type="button" onclick="refreshLocation()" class="btn btn-outline" style="padding: 0.6rem; border-radius: 50%; width: 42px; height: 42px;" title="Perbarui Lokasi GPS">
+            <i data-lucide="refresh-cw" style="width: 20px; height: 20px; color: var(--text-muted);"></i>
         </button>
     </div>
 </div>
@@ -82,30 +82,30 @@
         </div>
 
         <!-- Check Time Info -->
-        <div style="background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2.5rem; font-size: 0.9rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="background-color: rgba(255,255,255,0.5); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2.5rem; font-size: 0.95rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 1rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="clock" style="width: 16px; height: 16px;"></i> Masuk</span>
+                <span style="display: flex; align-items: center; gap: 0.6rem; font-weight: 600;"><i data-lucide="clock" style="width: 18px; height: 18px; color: var(--success);"></i> Masuk</span>
                 <strong style="color: var(--text-main);">{{ $settings['check_in_start'] }} - {{ $settings['check_in_end'] }} WIB</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="clock" style="width: 16px; height: 16px;"></i> Pulang</span>
+                <span style="display: flex; align-items: center; gap: 0.6rem; font-weight: 600;"><i data-lucide="clock" style="width: 18px; height: 18px; color: var(--primary);"></i> Pulang</span>
                 <strong style="color: var(--text-main);">Mulai {{ $settings['check_out_start'] }} WIB</strong>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 0.75rem; margin-top: 0.25rem;">
-                <span style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="map-pin" style="width: 16px; height: 16px;"></i> Jangkauan Posko</span>
-                <strong style="color: var(--primary);">{{ $settings['radius'] }} meter</strong>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 1rem; margin-top: 0.25rem;">
+                <span style="display: flex; align-items: center; gap: 0.6rem; font-weight: 600;"><i data-lucide="map-pin" style="width: 18px; height: 18px; color: var(--warning);"></i> Radius Posko</span>
+                <strong style="color: var(--bg-sidebar);">{{ $settings['radius'] }} meter</strong>
             </div>
         </div>
 
         <!-- Submit Triggers -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <button type="button" id="btn-masuk" onclick="submitAttendance('masuk')" class="btn btn-success" @if(empty($token)) disabled @endif style="padding: 1.25rem 0.5rem; flex-direction: column; gap: 0.4rem;">
-                <span style="display: flex; align-items: center; gap: 0.4rem; font-size: 1.05rem;"><i data-lucide="log-in" style="width: 20px; height: 20px;"></i> Absen Masuk</span>
-                <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.02em;">{{ $settings['check_in_start'] }} - {{ $settings['check_in_end'] }}</span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <button type="button" id="btn-masuk" onclick="submitAttendance('masuk')" class="btn btn-success" @if(empty($token)) disabled @endif style="padding: 1.5rem 0.5rem; flex-direction: column; gap: 0.5rem; border-radius: var(--radius-lg);">
+                <span style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; letter-spacing: -0.01em;"><i data-lucide="log-in" style="width: 24px; height: 24px;"></i> Absen Masuk</span>
+                <span style="font-size: 0.8rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.03em;">{{ $settings['check_in_start'] }} - {{ $settings['check_in_end'] }}</span>
             </button>
-            <button type="button" id="btn-pulang" onclick="submitAttendance('pulang')" class="btn btn-primary" @if(empty($token)) disabled @endif style="padding: 1.25rem 0.5rem; flex-direction: column; gap: 0.4rem;">
-                <span style="display: flex; align-items: center; gap: 0.4rem; font-size: 1.05rem;"><i data-lucide="log-out" style="width: 20px; height: 20px;"></i> Absen Pulang</span>
-                <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.02em;">Mulai {{ $settings['check_out_start'] }}</span>
+            <button type="button" id="btn-pulang" onclick="submitAttendance('pulang')" class="btn btn-primary" @if(empty($token)) disabled @endif style="padding: 1.5rem 0.5rem; flex-direction: column; gap: 0.5rem; border-radius: var(--radius-lg);">
+                <span style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; letter-spacing: -0.01em;"><i data-lucide="log-out" style="width: 24px; height: 24px;"></i> Absen Pulang</span>
+                <span style="font-size: 0.8rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.03em;">Mulai {{ $settings['check_out_start'] }}</span>
             </button>
         </div>
     </form>
@@ -113,7 +113,7 @@
 
 <!-- Success / Error Animated Feedback Modal -->
 <div id="feedback-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1100; display: none; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; transition: opacity 0.3s ease;">
-    <div class="glass-card" style="width: 100%; max-width: 420px; text-align: center; background: white; padding: 3rem 2.5rem; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+    <div class="glass-card" style="width: 100%; max-width: 420px; text-align: center; background: white; padding: 3.5rem 2.5rem; transform: scale(0.85); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: var(--radius-xl);">
         
         <!-- Feedback Icon Holder -->
         <div id="feedback-icon-container" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; font-size: 2rem;">
@@ -132,9 +132,10 @@
 </div>
 
 <style>
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 0.8; }
-        100% { transform: scale(2.5); opacity: 0; }
+    @keyframes pulse-gps {
+        0% { transform: scale(0.8); opacity: 0.8; }
+        50% { opacity: 0.4; }
+        100% { transform: scale(3); opacity: 0; }
     }
     .animate-spin {
         animation: spin 1s infinite linear;
@@ -310,6 +311,7 @@
         if (success) {
             if (inside) {
                 indicator.style.backgroundColor = 'var(--success)';
+                indicator.style.boxShadow = '0 0 12px var(--success)';
                 badge.style.display = 'block';
                 badge.style.backgroundColor = 'var(--success-light)';
                 badge.style.color = 'var(--success)';
@@ -317,6 +319,7 @@
                 badge.innerText = `${distance.toFixed(0)}m`;
             } else {
                 indicator.style.backgroundColor = 'var(--danger)';
+                indicator.style.boxShadow = '0 0 12px var(--danger)';
                 badge.style.display = 'block';
                 badge.style.backgroundColor = 'var(--danger-light)';
                 badge.style.color = 'var(--danger)';
@@ -325,7 +328,7 @@
             }
         } else {
             indicator.style.backgroundColor = 'var(--danger)';
-            badge.style.display = 'none';
+            indicator.style.boxShadow = '0 0 12px var(--danger)';
         }
     }
 

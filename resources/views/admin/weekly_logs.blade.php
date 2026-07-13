@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+    <div class="table-container">
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
             <thead>
                 <tr style="background-color: #f8fafc; border-bottom: 1px solid var(--border-color);">

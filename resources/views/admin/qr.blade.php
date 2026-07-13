@@ -19,8 +19,8 @@
     <div class="glass-card" id="qr-container-card" style="width: 100%; max-width: 480px; text-align: center; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); padding: 3rem 2rem; position: relative; transition: all 0.3s ease;">
         
         <!-- Animated Scanner Line -->
-        <div style="position: absolute; top: 0; left: 0; right: 0; height: 100%; overflow: hidden; pointer-events: none; border-radius: var(--radius-xl);">
-            <div id="scanner-line" style="width: 100%; height: 3px; background: linear-gradient(to right, transparent, var(--primary), transparent); position: absolute; top: 0; animation: scan 3.5s infinite linear; opacity: 0.75;"></div>
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 100%; overflow: hidden; pointer-events: none; border-radius: inherit; z-index: 10;">
+            <div id="scanner-line" style="width: 100%; height: 4px; background: linear-gradient(90deg, transparent, var(--primary), var(--primary-light), var(--primary), transparent); position: absolute; top: 0; animation: scan 3s infinite ease-in-out; opacity: 0.8; box-shadow: 0 0 15px 2px var(--primary);"></div>
         </div>
 
         <div style="margin-bottom: 1.5rem;">
@@ -31,7 +31,7 @@
         </div>
 
         <!-- SVG Container -->
-        <div id="qr-svg-holder" style="display: inline-flex; align-items: center; justify-content: center; background: white; padding: 1.5rem; border-radius: var(--radius-lg); border: 2px solid var(--border-color); box-shadow: inset var(--shadow-sm); min-height: 334px; min-width: 334px; margin-bottom: 2rem;">
+        <div id="qr-svg-holder" style="display: inline-flex; align-items: center; justify-content: center; background: white; padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); min-height: 334px; min-width: 334px; margin-bottom: 2rem; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
             <div style="color: var(--text-muted); font-size: 0.95rem;">
                 <i data-lucide="loader" class="animate-spin" style="width: 36px; height: 36px; margin: 0 auto 0.5rem auto; display: block;"></i>
                 Membuat QR Code...
@@ -106,6 +106,10 @@
                     .then(() => {
                         btnFullscreen.innerHTML = '<i data-lucide="minimize"></i> Tutup Layar Penuh';
                         cardContainer.style.padding = '8rem 2rem';
+                        cardContainer.style.background = 'var(--bg-main)';
+                        cardContainer.style.borderRadius = '0';
+                        cardContainer.style.maxWidth = '100%';
+                        document.getElementById('qr-svg-holder').style.transform = 'scale(1.75)';
                         lucide.createIcons();
                     })
                     .catch(err => {
@@ -120,6 +124,10 @@
             if (!document.fullscreenElement) {
                 btnFullscreen.innerHTML = '<i data-lucide="maximize"></i> Layar Penuh (Fullscreen)';
                 cardContainer.style.padding = '3rem 2rem';
+                cardContainer.style.background = 'var(--card-bg)';
+                cardContainer.style.borderRadius = 'var(--radius-xl)';
+                cardContainer.style.maxWidth = '480px';
+                document.getElementById('qr-svg-holder').style.transform = 'scale(1)';
                 lucide.createIcons();
             }
         });

@@ -11,34 +11,34 @@
 <!-- Stats Grid -->
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
     <!-- Stat 1 -->
-    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-lg); border-left: 4px solid var(--success);">
+    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative;">
         <div>
             <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Absen Masuk</p>
             <h3 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; line-height: 1;">{{ $stats['total_check_in'] }}</h3>
         </div>
-        <div style="background: linear-gradient(135deg, var(--success-light), #ecfdf5); color: var(--success); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+        <div style="background: var(--success-light); color: var(--success); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(5, 150, 105, 0.2);">
             <i data-lucide="log-in" style="width: 32px; height: 32px;"></i>
         </div>
     </div>
 
     <!-- Stat 2 -->
-    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-lg); border-left: 4px solid var(--primary);">
+    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative;">
         <div>
             <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Absen Pulang</p>
             <h3 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; line-height: 1;">{{ $stats['total_check_out'] }}</h3>
         </div>
-        <div style="background: linear-gradient(135deg, var(--primary-light), #eef2ff); color: var(--primary); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+        <div style="background: var(--primary-soft); color: var(--primary); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(79, 70, 229, 0.2);">
             <i data-lucide="log-out" style="width: 32px; height: 32px;"></i>
         </div>
     </div>
 
     <!-- Stat 3 -->
-    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-lg); border-left: 4px solid var(--bg-sidebar);">
+    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative;">
         <div>
             <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Total Aktivitas</p>
             <h3 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; line-height: 1;">{{ $stats['total_attendance'] }}</h3>
         </div>
-        <div style="background: linear-gradient(135deg, #f1f5f9, #f8fafc); color: var(--bg-sidebar); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+        <div style="background: #f1f5f9; color: var(--bg-sidebar); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color);">
             <i data-lucide="database" style="width: 32px; height: 32px;"></i>
         </div>
     </div>
