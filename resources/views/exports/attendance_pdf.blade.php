@@ -101,7 +101,7 @@
 <body>
 
     <div class="header">
-        <h1>Laporan Absensi Evaluasi Mingguan</h1>
+        <h1>Laporan Absensi Evaluasi Harian</h1>
         <p>Posko: {{ $kknName }}</p>
     </div>
 
@@ -109,15 +109,15 @@
         <tr>
             <td style="width: 15%; font-weight: bold;">Evaluasi</td>
             <td style="width: 2%;">:</td>
-            <td>Minggu Ke-{{ $weekLabel }}</td>
+            <td>Harian</td>
             <td style="width: 15%; font-weight: bold; text-align: right;">Dicetak Pada</td>
             <td style="width: 2%; text-align: center;">:</td>
             <td style="width: 25%; text-align: right;">{{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('d F Y H:i') }} WIB</td>
         </tr>
         <tr>
-            <td style="font-weight: bold;">Periode</td>
+            <td style="font-weight: bold;">Periode / Tanggal</td>
             <td>:</td>
-            <td colspan="4">{{ \Carbon\Carbon::parse($start)->translatedFormat('d M Y') }} s.d. {{ \Carbon\Carbon::parse($end)->translatedFormat('d M Y') }}</td>
+            <td colspan="4">{{ \Carbon\Carbon::parse($date)->translatedFormat('l, d M Y') }}</td>
         </tr>
     </table>
 
@@ -152,7 +152,7 @@
             @empty
                 <tr>
                     <td colspan="6" style="text-align: center; padding: 20px; color: #6b7280;">
-                        Tidak ada data kehadiran pada periode evaluasi mingguan ini.
+                        Tidak ada data kehadiran pada periode evaluasi harian ini.
                     </td>
                 </tr>
             @endforelse
