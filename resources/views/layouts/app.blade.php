@@ -187,6 +187,7 @@
         .badge {
             display: inline-flex;
             align-items: center;
+            white-space: nowrap;
             padding: 0.4rem 0.85rem;
             border-radius: 9999px;
             font-size: 0.75rem;

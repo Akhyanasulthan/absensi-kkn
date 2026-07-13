@@ -75,17 +75,17 @@
                         <tr>
                             <td style="font-weight: 600;">{{ $log->name }}</td>
                             <td>{{ $log->division }}</td>
-                            <td>
-                                <span class="badge" style="background-color: var(--success-light); color: var(--success);">
+                            <td style="white-space: nowrap;">
+                                <span class="badge" style="white-space: nowrap; background-color: var(--success-light); color: var(--success);">
                                     {{ $log->check_in ? 'Hadir - ' . \Carbon\Carbon::parse($log->check_in)->format('H:i:s') : '-' }}
                                 </span>
                             </td>
-                            <td>
-                                <span class="badge" style="{{ $log->check_out ? 'background-color: var(--primary-light); color: var(--primary);' : 'background-color: #f1f5f9; color: var(--text-muted);' }}">
+                            <td style="white-space: nowrap;">
+                                <span class="badge" style="white-space: nowrap; {{ $log->check_out ? 'background-color: var(--primary-light); color: var(--primary);' : 'background-color: #f1f5f9; color: var(--text-muted);' }}">
                                     {{ $log->check_out ? 'Pulang - ' . \Carbon\Carbon::parse($log->check_out)->format('H:i:s') : 'Belum Pulang' }}
                                 </span>
                             </td>
-                            <td>
+                            <td style="white-space: nowrap;">
                                 <span class="badge" style="
                                     @if($log->status === 'Present') background-color: var(--success-light); color: var(--success);
                                     @elseif($log->status === 'Late') background-color: var(--warning-light); color: var(--warning);

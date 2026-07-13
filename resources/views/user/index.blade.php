@@ -5,7 +5,7 @@
 @section('content')
 <div style="margin-bottom: 2.5rem; text-align: center; margin-top: 1rem;">
     <span class="badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; margin-bottom: 1rem; padding: 0.5rem 1rem; font-size: 0.85rem; box-shadow: var(--shadow-glow);">
-        KKN Geofence Attendance
+        KKN PAKUHAJI 2026
     </span>
     <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--bg-sidebar), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Presensi Digital</h1>
     <p style="color: var(--text-muted); font-size: 1.05rem; margin-top: 0.5rem; font-weight: 500;">Silakan pilih nama Anda dan lakukan absensi.</p>

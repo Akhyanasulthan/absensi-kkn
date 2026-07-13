@@ -88,18 +88,18 @@
                         </td>
                         <td style="padding: 1rem; font-weight: 500; color: var(--text-main);">{{ $log->name }}</td>
                         <td style="padding: 1rem; color: var(--text-muted);">{{ $log->division }}</td>
-                        <td style="padding: 1rem;">
-                            <span style="background-color: var(--success-light); color: var(--success); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500;">
+                        <td style="padding: 1rem; white-space: nowrap;">
+                            <span class="badge" style="background-color: var(--success-light); color: var(--success);">
                                 {{ $log->check_in ? 'Hadir - ' . \Carbon\Carbon::parse($log->check_in)->format('H:i:s') : '-' }}
                             </span>
                         </td>
-                        <td style="padding: 1rem;">
-                            <span style="{{ $log->check_out ? 'background-color: var(--primary-light); color: var(--primary);' : 'background-color: #f1f5f9; color: var(--text-muted);' }} padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500;">
+                        <td style="padding: 1rem; white-space: nowrap;">
+                            <span class="badge" style="{{ $log->check_out ? 'background-color: var(--primary-light); color: var(--primary);' : 'background-color: #f1f5f9; color: var(--text-muted);' }}">
                                 {{ $log->check_out ? 'Pulang - ' . \Carbon\Carbon::parse($log->check_out)->format('H:i:s') : '-' }}
                             </span>
                         </td>
-                        <td style="padding: 1rem;">
-                            <span style="display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; font-size: 0.78rem; font-weight: 600; border-radius: 9999px; 
+                        <td style="padding: 1rem; white-space: nowrap;">
+                            <span class="badge" style="
                                 @if($log->status === 'Present') background-color: var(--success-light); color: var(--success);
                                 @elseif($log->status === 'Late') background-color: var(--warning-light); color: var(--warning);
                                 @else background-color: var(--danger-light); color: var(--danger); @endif">
