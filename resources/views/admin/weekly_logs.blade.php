@@ -173,12 +173,10 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 1.25rem;">
-                <label for="status" class="form-label">Status Kehadiran</label>
+                <label for="status" class="form-label">Tipe Absen</label>
                 <select name="status" id="status" class="form-input" required>
-                    <option value="Present">Hadir (Present)</option>
-                    <option value="Late">Terlambat (Late)</option>
-                    <option value="Absent">Tidak Hadir (Absent)</option>
-                    <option value="Checkout Only">Checkout Only</option>
+                    <option value="Present">Masuk</option>
+                    <option value="Checkout Only">Pulang</option>
                 </select>
             </div>
 

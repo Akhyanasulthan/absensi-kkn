@@ -214,7 +214,7 @@ class AdminController extends Controller implements HasMiddleware
         $request->validate([
             'student_id' => 'required|exists:users,id',
             'date' => 'required|date',
-            'status' => 'required|in:Present,Late,Absent',
+            'status' => 'required|in:Present,Checkout Only',
             'check_in' => 'nullable|date_format:H:i',
             'check_out' => 'nullable|date_format:H:i',
         ]);
