@@ -107,8 +107,8 @@ class AdminController extends Controller implements HasMiddleware
 
     public function getQrToken()
     {
-        // Force the URL to strictly use the APP_URL from .env so it doesn't default to 127.0.0.1 if accessed locally.
-        $baseUrl = rtrim(config('app.url'), '/');
+        // Use the current request's URL (which will automatically be the Railway domain)
+        $baseUrl = rtrim(url('/'), '/');
         $qrUrl = $baseUrl . '/?ref=posko_qr';
 
         // Render QR Code SVG using SimpleQRCode
