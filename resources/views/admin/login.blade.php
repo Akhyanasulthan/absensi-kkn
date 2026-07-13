@@ -36,7 +36,12 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                     <label for="password" class="form-label" style="margin-bottom: 0;">Password</label>
                 </div>
-                <input type="password" name="password" id="password" class="form-input" placeholder="••••••••" required>
+                <div style="position: relative;">
+                    <input type="password" name="password" id="password" class="form-input" placeholder="••••••••" required style="padding-right: 2.5rem; width: 100%;">
+                    <button type="button" onclick="togglePassword()" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;" title="Tampilkan sandi">
+                        <i data-lucide="eye" id="toggleIcon" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
@@ -50,4 +55,22 @@
         </form>
     </div>
 </div>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.setAttribute('data-lucide', 'eye');
+        }
+        
+        // Re-render the specific icon
+        lucide.createIcons();
+    }
+</script>
 @endsection
