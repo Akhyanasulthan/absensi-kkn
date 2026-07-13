@@ -10,6 +10,23 @@
     </div>
 </div>
 
+@if (session('success'))
+    <div style="background-color: var(--success-light); color: var(--success-hover); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1.25rem; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 500; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: var(--shadow-sm);">
+        <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+        <div>{{ session('success') }}</div>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div style="background-color: var(--danger-light); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1.25rem; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 500; margin-bottom: 2rem; box-shadow: var(--shadow-sm);">
+        <ul style="margin: 0; padding-left: 1.5rem;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <!-- Filter and Export Actions -->
 <div class="glass-card" style="padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
     <form action="{{ route('admin.logs') }}" method="GET" id="filter-form" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1.5rem; justify-content: space-between;">
@@ -35,7 +52,10 @@
         </div>
 
         <!-- Export Buttons -->
-        <div style="display: flex; gap: 0.75rem;">
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+            <button type="button" onclick="openManualModal()" class="btn btn-primary" style="background-color: var(--bg-sidebar);">
+                <i data-lucide="user-plus"></i> Tambah Absen Manual
+            </button>
             <a href="{{ route('admin.logs.export.excel', ['start' => $selectedStart, 'end' => $selectedEnd]) }}" class="btn btn-success">
                 <i data-lucide="file-spreadsheet"></i> Unduh Excel
             </a>
@@ -121,6 +141,67 @@
         </table>
     </div>
 </div>
+
+<!-- Manual Attendance Modal -->
+<div id="manual-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 50; align-items: center; justify-content: center; padding: 1rem;">
+    <div style="background: white; width: 100%; max-width: 500px; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lg);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="user-check" style="color: var(--primary); width: 22px; height: 22px;"></i> Tambah Absen Manual
+            </h3>
+            <button type="button" onclick="closeManualModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer;">
+                <i data-lucide="x" style="width: 24px; height: 24px;"></i>
+            </button>
+        </div>
+
+        <form action="{{ route('admin.logs.manual') }}" method="POST">
+            @csrf
+            
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label for="student_id" class="form-label">Mahasiswa</label>
+                <select name="student_id" id="student_id" class="form-input" required>
+                    <option value="" disabled selected>Pilih Mahasiswa...</option>
+                    @foreach($students as $s)
+                        <option value="{{ $s->id }}">{{ $s->name }} ({{ $s->division }})</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label for="date" class="form-label">Tanggal</label>
+                <input type="date" name="date" id="date" class="form-input" value="{{ \Carbon\Carbon::now('Asia/Jakarta')->toDateString() }}" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label for="status" class="form-label">Status Kehadiran</label>
+                <select name="status" id="status" class="form-input" required>
+                    <option value="Present">Hadir (Present)</option>
+                    <option value="Late">Terlambat (Late)</option>
+                    <option value="Absent">Tidak Hadir (Absent)</option>
+                    <option value="Checkout Only">Checkout Only</option>
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="check_in" class="form-label">Jam Masuk</label>
+                    <input type="time" name="check_in" id="check_in" class="form-input">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Opsional</span>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label for="check_out" class="form-label">Jam Pulang</label>
+                    <input type="time" name="check_out" id="check_out" class="form-input">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; display: block;">Opsional</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="button" onclick="closeManualModal()" class="btn btn-outline" style="flex: 1; justify-content: center;">Batal</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Simpan Absensi</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -133,5 +214,24 @@
             document.getElementById('end-date-input').value = dates[1];
         }
     }
+
+    const manualModal = document.getElementById('manual-modal');
+    
+    function openManualModal() {
+        manualModal.style.display = 'flex';
+        // Re-init lucide icons in case they didn't render inside the hidden modal
+        if(typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeManualModal() {
+        manualModal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    manualModal.addEventListener('click', function(e) {
+        if (e.target === manualModal) {
+            closeManualModal();
+        }
+    });
 </script>
 @endsection

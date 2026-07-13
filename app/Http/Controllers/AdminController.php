@@ -201,7 +201,40 @@ class AdminController extends Controller implements HasMiddleware
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('admin.weekly_logs', compact('weeks', 'selectedStart', 'selectedEnd', 'attendances'));
+        $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
+
+        return view('admin.weekly_logs', compact('weeks', 'selectedStart', 'selectedEnd', 'attendances', 'students'));
+    }
+
+    /**
+     * Store manual attendance.
+     */
+    public function storeManualAttendance(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:users,id',
+            'date' => 'required|date',
+            'status' => 'required|in:Present,Late,Absent',
+            'check_in' => 'nullable|date_format:H:i',
+            'check_out' => 'nullable|date_format:H:i',
+        ]);
+
+        $student = User::findOrFail($request->student_id);
+
+        Attendance::updateOrCreate(
+            [
+                'name' => $student->name,
+                'division' => $student->division,
+                'date' => $request->date,
+            ],
+            [
+                'check_in' => $request->check_in ? $request->check_in . ':00' : null,
+                'check_out' => $request->check_out ? $request->check_out . ':00' : null,
+                'status' => $request->status,
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Absensi manual berhasil disimpan!');
     }
 
     /**

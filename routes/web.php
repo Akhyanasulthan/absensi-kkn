@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
     Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::get('/admin/logs', [AdminController::class, 'weeklyLogs'])->name('admin.logs');
+    Route::post('/admin/logs/manual', [AdminController::class, 'storeManualAttendance'])->name('admin.logs.manual');
     Route::get('/admin/logs/export/excel', [AdminController::class, 'exportExcel'])->name('admin.logs.export.excel');
     Route::get('/admin/logs/export/pdf', [AdminController::class, 'exportPdf'])->name('admin.logs.export.pdf');
 
