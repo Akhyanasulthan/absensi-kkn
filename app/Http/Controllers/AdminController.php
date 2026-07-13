@@ -221,18 +221,44 @@ class AdminController extends Controller implements HasMiddleware
 
         $student = User::findOrFail($request->student_id);
 
-        Attendance::updateOrCreate(
-            [
-                'name' => $student->name,
-                'division' => $student->division,
-                'date' => $request->date,
-            ],
-            [
-                'check_in' => $request->check_in ? $request->check_in . ':00' : null,
-                'check_out' => $request->check_out ? $request->check_out . ':00' : null,
-                'status' => $request->status,
-            ]
-        );
+        $existingAttendance = Attendance::where('name', $student->name)
+            ->where('division', $student->division)
+            ->where('date', $request->date)
+            ->first();
+
+        if ($request->status === 'Present') {
+            if ($existingAttendance && $existingAttendance->check_in) {
+                return redirect()->back()->withErrors(['error' => 'Mahasiswa ini sudah melakukan absen Masuk pada tanggal tersebut.']);
+            }
+            
+            Attendance::updateOrCreate(
+                [
+                    'name' => $student->name,
+                    'division' => $student->division,
+                    'date' => $request->date,
+                ],
+                [
+                    'check_in' => $request->check_in ? $request->check_in . ':00' : null,
+                    'status' => 'Present',
+                ]
+            );
+        } else {
+            if ($existingAttendance && $existingAttendance->check_out) {
+                return redirect()->back()->withErrors(['error' => 'Mahasiswa ini sudah melakukan absen Pulang pada tanggal tersebut.']);
+            }
+
+            Attendance::updateOrCreate(
+                [
+                    'name' => $student->name,
+                    'division' => $student->division,
+                    'date' => $request->date,
+                ],
+                [
+                    'check_out' => $request->check_out ? $request->check_out . ':00' : null,
+                    'status' => $existingAttendance ? $existingAttendance->status : 'Checkout Only',
+                ]
+            );
+        }
 
         return redirect()->back()->with('success', 'Absensi manual berhasil disimpan!');
     }
