@@ -580,7 +580,7 @@
                 </form>
             @else
                 <a href="{{ route('admin.login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-                    <i data-lucide="log-in"></i> Admin Login
+                    <i data-lucide="log-in"></i> Login
                 </a>
             @endif
         </header>

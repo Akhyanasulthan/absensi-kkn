@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Login')
+@section('title', 'Login')
 
 @section('content')
 <div style="display: flex; align-items: center; justify-content: center; min-height: 60vh; padding: 1rem;">
@@ -9,7 +9,7 @@
             <div style="background-color: var(--primary-light); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; color: var(--primary);">
                 <i data-lucide="lock" style="width: 32px; height: 32px;"></i>
             </div>
-            <h2 style="font-weight: 700; font-size: 1.5rem; color: var(--bg-sidebar);">Admin Login</h2>
+            <h2 style="font-weight: 700; font-size: 1.5rem; color: var(--bg-sidebar);">Login</h2>
             <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Masukkan kredensial Anda untuk masuk ke dashboard</p>
         </div>
 
