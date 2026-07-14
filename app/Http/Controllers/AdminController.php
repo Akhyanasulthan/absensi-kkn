@@ -58,7 +58,7 @@ class AdminController extends Controller implements HasMiddleware
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
-            return redirect()->route('user.index');
+            return redirect()->intended(route('user.index'));
         }
 
         return back()->withErrors([
