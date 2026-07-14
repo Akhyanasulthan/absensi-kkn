@@ -13,11 +13,22 @@
 
 <!-- Barcode/Token Detection Status Widget -->
 @if(empty($token))
-    <div class="glass-card" style="padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; background-color: var(--danger-light); border: 1px solid rgba(239, 68, 68, 0.2); color: #991b1b; display: flex; align-items: flex-start; gap: 1rem; box-shadow: none;">
-        <i data-lucide="alert-triangle" style="width: 24px; height: 24px; flex-shrink: 0; color: var(--danger); margin-top: 2px;"></i>
-        <div>
+    <div class="glass-card" id="scan-container" style="padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; background-color: var(--danger-light); border: 1px solid rgba(239, 68, 68, 0.2); color: #991b1b; display: flex; flex-direction: column; align-items: center; gap: 1rem; box-shadow: none;">
+        <i data-lucide="alert-triangle" style="width: 24px; height: 24px; color: var(--danger);"></i>
+        <div style="text-align: center;">
             <strong style="display: block; font-size: 1rem; margin-bottom: 0.25rem; font-weight: 700;">Barcode Tidak Terdeteksi!</strong>
-            <span style="font-size: 0.9rem; opacity: 0.9;">Anda harus melakukan scan QR Code/Barcode yang ditampilkan di layar Proyektor Admin menggunakan kamera handphone Anda untuk membuka sistem absensi.</span>
+            <span style="font-size: 0.9rem; opacity: 0.9;">Silakan scan QR Code di layar admin menggunakan fitur di bawah.</span>
+        </div>
+        <button type="button" onclick="startScanner()" class="btn btn-primary" style="margin-top: 0.5rem; border-radius: var(--radius-md); font-size: 0.9rem; padding: 0.75rem 1.25rem;">
+            <i data-lucide="camera" style="width: 18px; height: 18px; margin-right: 0.5rem;"></i> Buka Kamera & Scan
+        </button>
+        <div id="reader" style="width: 100%; max-width: 400px; display: none; margin-top: 1rem; border-radius: var(--radius-md); overflow: hidden; background: white;"></div>
+    </div>
+    
+    <div class="glass-card" id="scan-success-container" style="display: none; padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; background-color: var(--success-light); border: 1px solid rgba(16, 185, 129, 0.2); color: #065f46; align-items: center; gap: 1rem; box-shadow: none;">
+        <i data-lucide="qr-code" style="width: 24px; height: 24px; color: var(--success); flex-shrink: 0;"></i>
+        <div style="font-weight: 600; font-size: 0.95rem;">
+            Barcode Terverifikasi. Lokasi Anda sedang dilacak.
         </div>
     </div>
 @else
@@ -56,7 +67,7 @@
     
     <!-- Disable overlay if token is missing -->
     @if(empty($token))
-        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 10; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;"></div>
+        <div id="form-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 10; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;"></div>
     @endif
 
     <form id="attendance-form" onsubmit="event.preventDefault();">
@@ -156,7 +167,41 @@
 @endsection
 
 @section('scripts')
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
+    // QR Scanner Logic
+    let html5QrcodeScanner = null;
+
+    function startScanner() {
+        document.getElementById('reader').style.display = 'block';
+        if (!html5QrcodeScanner) {
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if (decodedText.includes('ref=posko_qr') || decodedText === 'posko_qr') {
+            html5QrcodeScanner.clear();
+            document.getElementById('qr_data').value = 'posko_qr';
+            document.getElementById('scan-container').style.display = 'none';
+            document.getElementById('scan-success-container').style.display = 'flex';
+            
+            const overlay = document.getElementById('form-overlay');
+            if (overlay) overlay.style.display = 'none';
+            
+            document.getElementById('btn-masuk').disabled = false;
+            document.getElementById('btn-pulang').disabled = false;
+        } else {
+            alert('QR Code tidak valid!');
+        }
+    }
+
+    function onScanFailure(error) {
+        // Handle scan failure silently
+    }
+
     // KKN Location Configuration passed from controller
     const poskoConfig = {
         lat: {{ $settings['latitude'] }},
