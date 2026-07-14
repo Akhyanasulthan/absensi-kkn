@@ -48,7 +48,12 @@
 
             <div class="form-group" style="margin-bottom: 2rem;">
                 <label for="student_password" class="form-label">Password</label>
-                <input type="password" name="password" id="student_password" class="form-input" placeholder="Minimal 8 karakter..." required>
+                <div style="position: relative;">
+                    <input type="password" name="password" id="student_password" class="form-input" style="padding-right: 2.5rem;" placeholder="Minimal 8 karakter..." required>
+                    <button type="button" onclick="togglePassword()" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="eye" id="password-toggle-icon" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
                 <span id="password-help" style="color: var(--text-muted); font-size: 0.85rem; display: none; margin-top: 0.5rem;">Kosongkan jika tidak ingin mengubah password.</span>
                 @error('password') <span style="color: var(--danger); font-size: 0.85rem; display: block; margin-top: 0.5rem;">{{ $message }}</span> @enderror
             </div>
@@ -213,6 +218,19 @@
         
         document.getElementById('btn-cancel').style.display = 'none';
         
+        lucide.createIcons();
+    }
+
+    function togglePassword() {
+        const passwordInput = document.getElementById('student_password');
+        const icon = document.getElementById('password-toggle-icon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            passwordInput.type = 'password';
+            icon.setAttribute('data-lucide', 'eye');
+        }
         lucide.createIcons();
     }
 </script>
