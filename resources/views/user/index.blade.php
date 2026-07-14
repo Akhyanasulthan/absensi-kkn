@@ -82,9 +82,6 @@
                     <div style="color: var(--text-main);">{{ Auth::user()->name }}</div>
                     <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{{ Auth::user()->division }}</div>
                 </div>
-                <button type="button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">
-                    Logout
-                </button>
             </div>
         </div>
 
