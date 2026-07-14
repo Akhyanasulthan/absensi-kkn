@@ -571,13 +571,7 @@
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm">
                     <i data-lucide="user"></i> Admin Panel
                 </a>
-            @elseif(Auth::check())
-                <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-                        <i data-lucide="log-out"></i> Logout
-                    </button>
-                </form>
+
             @else
                 <a href="{{ route('admin.login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
                     <i data-lucide="log-in"></i> Login
