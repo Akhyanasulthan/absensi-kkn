@@ -49,7 +49,7 @@
             <div class="form-group" style="margin-bottom: 2rem;">
                 <label for="student_password" class="form-label">Password</label>
                 <div style="position: relative;">
-                    <input type="password" name="password" id="student_password" class="form-input" style="padding-right: 2.5rem;" placeholder="Minimal 8 karakter..." required>
+                    <input type="password" name="password" id="student_password" class="form-input" style="padding-right: 2.5rem;" placeholder="Minimal 8 karakter..." autocomplete="new-password" required>
                     <button type="button" onclick="togglePassword()" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0; display: flex; align-items: center; justify-content: center;">
                         <i data-lucide="eye" id="password-toggle-icon" style="width: 18px; height: 18px;"></i>
                     </button>

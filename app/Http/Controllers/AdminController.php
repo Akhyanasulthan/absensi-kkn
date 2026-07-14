@@ -166,7 +166,7 @@ class AdminController extends Controller implements HasMiddleware
         // Update admin password if provided
         if ($request->filled('password')) {
             $user = Auth::user();
-            $user->password = bcrypt($request->password);
+            $user->password = $request->password;
             $user->save();
         }
 
@@ -313,7 +313,7 @@ class AdminController extends Controller implements HasMiddleware
         User::create([
             'name' => trim($request->name),
             'email' => trim($request->email),
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'role' => 'user',
             'division' => trim($request->division),
         ]);
@@ -340,7 +340,7 @@ class AdminController extends Controller implements HasMiddleware
         ];
 
         if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
+            $data['password'] = $request->password;
         }
 
         $student->update($data);
