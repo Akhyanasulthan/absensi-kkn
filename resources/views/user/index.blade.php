@@ -65,20 +65,16 @@
         <input type="hidden" id="qr_data" value="{{ $token }}">
 
         <div class="form-group" style="margin-bottom: 2rem;">
-            <label for="user-student-select" class="form-label">Identitas Mahasiswa</label>
-            <select id="user-student-select" class="form-input" onchange="onStudentSelect(this)" required style="font-size: 1.05rem; padding: 1rem 1.25rem;">
-                <option value="">-- Pilih Nama Anda --</option>
-                @foreach($students as $student)
-                    <option value="{{ $student->id }}" data-name="{{ $student->name }}" data-division="{{ $student->division }}">
-                        {{ $student->name }} ({{ $student->division }})
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="form-group" style="display: none;">
-            <input type="hidden" id="user-name" class="form-input" required>
-            <input type="hidden" id="user-division" class="form-input" required>
+            <label class="form-label">Identitas Mahasiswa</label>
+            <div style="padding: 1rem 1.25rem; background-color: rgba(255,255,255,0.8); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);">
+                <div>
+                    <div style="color: var(--text-main);">{{ Auth::user()->name }}</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{{ Auth::user()->division }}</div>
+                </div>
+                <button type="button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">
+                    Logout
+                </button>
+            </div>
         </div>
 
         <!-- Check Time Info -->
@@ -108,6 +104,10 @@
                 <span style="font-size: 0.8rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.03em;">Mulai {{ $settings['check_out_start'] }}</span>
             </button>
         </div>
+    </form>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
     </form>
 </div>
 
@@ -175,43 +175,10 @@
     
     let watchId = null;
 
-    // Load saved Name & Division
+    // Start location tracking
     document.addEventListener('DOMContentLoaded', () => {
-        const studentSelect = document.getElementById('user-student-select');
-        if (studentSelect) {
-            const savedStudentId = localStorage.getItem('kkn_student_id');
-            if (savedStudentId) {
-                studentSelect.value = savedStudentId;
-                onStudentSelect(studentSelect);
-            }
-        }
         startTrackingLocation();
     });
-
-    // Populate division and hidden name field
-    function onStudentSelect(selectEl) {
-        const nameInput = document.getElementById('user-name');
-        const divisionInput = document.getElementById('user-division');
-        
-        if (selectEl && selectEl.selectedIndex > 0) {
-            const selectedOption = selectEl.options[selectEl.selectedIndex];
-            const name = selectedOption.getAttribute('data-name');
-            const division = selectedOption.getAttribute('data-division');
-            
-            nameInput.value = name;
-            divisionInput.value = division;
-            
-            localStorage.setItem('kkn_student_id', selectEl.value);
-            localStorage.setItem('kkn_student_name', name);
-            localStorage.setItem('kkn_student_division', division);
-        } else {
-            if (nameInput) nameInput.value = '';
-            if (divisionInput) divisionInput.value = '';
-            localStorage.removeItem('kkn_student_id');
-            localStorage.removeItem('kkn_student_name');
-            localStorage.removeItem('kkn_student_division');
-        }
-    }
 
     // Haversine distance formula in JS
     function getDistance(lat1, lon1, lat2, lon2) {
@@ -334,15 +301,7 @@
 
     // Submit Attendance directly using url token
     function submitAttendance(action) {
-        const name = document.getElementById('user-name').value.trim();
-        const division = document.getElementById('user-division').value.trim();
         const qrData = document.getElementById('qr_data').value;
-
-        // 1. Form Validation
-        if (!name || !division) {
-            alert("Harap isi Nama Lengkap dan Divisi KKN terlebih dahulu.");
-            return;
-        }
 
         // 2. Barcode Token check
         if (!qrData) {
@@ -372,8 +331,6 @@
                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
-                name: name,
-                division: division,
                 latitude: userLocation.lat,
                 longitude: userLocation.lng,
                 action: action,

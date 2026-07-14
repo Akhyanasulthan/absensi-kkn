@@ -17,8 +17,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        // The user attendance page is public. 
-        // We no longer redirect admins because admins might want to test the public page.
+        // The user attendance page requires login. 
 
         $settings = [
             'kkn_name' => Setting::getValue('kkn_name', 'KKN Posko'),
@@ -30,10 +29,9 @@ class AttendanceController extends Controller
             'check_out_start' => Setting::getValue('check_out_start', '09:30'),
         ];
 
-        $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
         $token = request()->get('ref', '');
 
-        return view('user.index', compact('settings', 'students', 'token'));
+        return view('user.index', compact('settings', 'token'));
     }
 
     /**
@@ -42,16 +40,14 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'division' => 'required|string|max:255',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'action' => 'required|in:masuk,pulang',
             'qr_data' => 'required|string',
         ]);
 
-        $name = trim($request->name);
-        $division = trim($request->division);
+        $name = Auth::user()->name;
+        $division = Auth::user()->division;
         $latitude = $request->latitude;
         $longitude = $request->longitude;
         $action = $request->action;

@@ -10,9 +10,11 @@ use App\Http\Controllers\AdminController;
 |--------------------------------------------------------------------------
 */
 
-// User Routes (Public - No login required so anyone scanning barcode can access)
-Route::get('/', [AttendanceController::class, 'index'])->name('user.index');
-Route::post('/attendance', [AttendanceController::class, 'store'])->name('user.attendance.store');
+// User Routes (Requires login)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [AttendanceController::class, 'index'])->name('user.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('user.attendance.store');
+});
 
 // Unified Authentication Routes
 Route::get('/login', [AdminController::class, 'showLogin'])->name('login');
