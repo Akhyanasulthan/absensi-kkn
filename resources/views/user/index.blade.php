@@ -170,20 +170,35 @@
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
     // QR Scanner Logic
-    let html5QrcodeScanner = null;
+    let html5QrCode = null;
 
     function startScanner() {
         document.getElementById('reader').style.display = 'block';
-        if (!html5QrcodeScanner) {
-            html5QrcodeScanner = new Html5QrcodeScanner(
-                "reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
-            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        if (!html5QrCode) {
+            html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start(
+                { facingMode: "environment" },
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 }
+                },
+                onScanSuccess,
+                onScanFailure
+            ).catch((err) => {
+                alert("Kamera tidak dapat diakses atau tidak ditemukan.");
+                console.error(err);
+            });
         }
     }
 
     function onScanSuccess(decodedText, decodedResult) {
         if (decodedText.includes('ref=posko_qr') || decodedText === 'posko_qr') {
-            html5QrcodeScanner.clear();
+            html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+            }).catch((err) => {
+                console.error(err);
+            });
+            
             document.getElementById('qr_data').value = 'posko_qr';
             document.getElementById('scan-container').style.display = 'none';
             document.getElementById('scan-success-container').style.display = 'flex';
