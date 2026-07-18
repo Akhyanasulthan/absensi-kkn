@@ -111,7 +111,7 @@
                     } else if (cardContainer.msRequestFullscreen) {
                         cardContainer.msRequestFullscreen();
                     } else {
-                        alert(\`Gagal mengaktifkan mode layar penuh: \${err.message}\`);
+                        alert(`Gagal mengaktifkan mode layar penuh: ${err.message}`);
                     }
                 });
             } else {
