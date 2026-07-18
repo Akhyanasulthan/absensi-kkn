@@ -544,9 +544,11 @@
                     </form>
                 @endif
             @else
-                <a href="{{ route('login') }}" class="toy-btn toy-btn-small">
-                    <i data-lucide="shield"></i> Admin
-                </a>
+                @if(!Route::is('login') && !Route::is('admin.login'))
+                    <a href="{{ route('login') }}" class="toy-btn toy-btn-small">
+                        <i data-lucide="shield"></i> Admin
+                    </a>
+                @endif
             @endif
         </header>
 
