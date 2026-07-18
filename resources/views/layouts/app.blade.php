@@ -613,14 +613,19 @@
                 <i data-lucide="map-pin" style="color: var(--primary);"></i>
                 <span>{{ \App\Models\Setting::getValue('kkn_name', 'KKN Posko') }}</span>
             </a>
-            @if(Auth::check() && Auth::user()->role === 'admin')
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
-                    <i data-lucide="user"></i> Admin Panel
-                </a>
+            @if(Auth::check())
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
+                        <i data-lucide="user"></i> Admin Panel
+                    </a>
+                @else
+                    <a href="{{ route('logout') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); border-radius: 12px;">
+                        <i data-lucide="log-out"></i> Logout
+                    </a>
+                @endif
             @else
-                <!-- Show Logout button even on login page if they ask for it, or direct them to login -->
-                <a href="{{ route('logout') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); border-radius: 12px;">
-                    <i data-lucide="log-out"></i> Logout
+                <a href="{{ route('admin.login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
+                    <i data-lucide="log-in"></i> Login
                 </a>
             @endif
         </header>
