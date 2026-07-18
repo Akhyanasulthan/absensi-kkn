@@ -73,10 +73,11 @@
     function fetchQrToken() {
         const svgHolder = document.getElementById('qr-svg-holder');
         
-        fetch("{{ route('admin.qr.token') }}")
+        fetch("/admin/qr-token")
             .then(response => response.json())
             .then(data => {
-                svgHolder.innerHTML = data.svg;
+                let cleanSvg = data.svg.replace(/<\?xml.*\?>/i, '');
+                svgHolder.innerHTML = cleanSvg;
             })
             .catch(error => {
                 console.error("Gagal mengambil QR token:", error);
