@@ -613,13 +613,21 @@
                 <i data-lucide="map-pin" style="color: var(--primary);"></i>
                 <span>{{ \App\Models\Setting::getValue('kkn_name', 'KKN Posko') }}</span>
             </a>
-            @if(Auth::check() && Auth::user()->role === 'admin')
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm">
-                    <i data-lucide="user"></i> Admin Panel
-                </a>
-
+            @if(Auth::check())
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
+                        <i data-lucide="user"></i> Admin Panel
+                    </a>
+                @else
+                    <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); border-radius: 12px;">
+                            <i data-lucide="log-out"></i> Logout
+                        </button>
+                    </form>
+                @endif
             @else
-                <a href="{{ route('admin.login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                <a href="{{ route('admin.login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
                     <i data-lucide="log-in"></i> Login
                 </a>
             @endif
