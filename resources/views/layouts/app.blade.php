@@ -6,15 +6,429 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ \App\Models\Setting::getValue('kkn_name', 'KKN Posko') }}</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    @if(Auth::check() && !Route::is('user.index') && !Route::is('login') && !Route::is('admin.login'))
+        <!-- Google Fonts (Toy Story) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    @else
+        <!-- Google Fonts (Generic) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    @endif
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Custom CSS Design System - Premium Modern -->
+    @if(Auth::check() && !Route::is('user.index') && !Route::is('login') && !Route::is('admin.login'))
+    <!-- Custom CSS Design System - Toy Story Theme (ADMIN ONLY) -->
+    <style>
+        :root {
+            /* Toy Story Color Palette */
+            --woody-yellow: #FDE047;
+            --woody-red: #EF4444;
+            --woody-red-dark: #B91C1C;
+            --woody-brown: #8B4513;
+            --woody-blue: #3B82F6;
+            
+            --buzz-green: #84CC16;
+            --buzz-green-dark: #4D7C0F;
+            --buzz-purple: #A855F7;
+            
+            --andy-blue: #4CB1E1;
+            
+            /* Text Colors */
+            --text-main: #1E3A8A; /* Deep blue */
+            --text-muted: #475569;
+            
+            /* Typography */
+            --font-heading: 'Fredoka One', cursive;
+            --font-body: 'Nunito', sans-serif;
+            
+            /* Transitions */
+            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.6;
+            
+            /* Andy's Room Wallpaper Blue */
+            background-color: var(--andy-blue);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 10px, transparent 11px),
+                radial-gradient(circle at 22% 29%, rgba(255,255,255,0.8) 15px, transparent 16px),
+                radial-gradient(circle at 25% 30%, rgba(255,255,255,0.8) 12px, transparent 13px),
+                radial-gradient(circle at 23% 32%, rgba(255,255,255,0.8) 14px, transparent 15px),
+                
+                radial-gradient(circle at 75% 60%, rgba(255,255,255,0.6) 10px, transparent 11px),
+                radial-gradient(circle at 77% 59%, rgba(255,255,255,0.6) 15px, transparent 16px),
+                radial-gradient(circle at 80% 60%, rgba(255,255,255,0.6) 12px, transparent 13px),
+                radial-gradient(circle at 78% 62%, rgba(255,255,255,0.6) 14px, transparent 15px);
+            background-size: 200px 200px;
+        }
+
+        /* -------------------------------------
+           Utility & Toy Component Styles
+           ------------------------------------- */
+        
+        .toy-card {
+            background: white;
+            border: 4px solid var(--woody-blue);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15), inset 0 -4px 0 rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toy-title {
+            font-family: var(--font-heading);
+            color: var(--woody-blue);
+            letter-spacing: 1px;
+        }
+
+        /* Buzz Lightyear Button */
+        .toy-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--buzz-green);
+            border: 4px solid var(--buzz-green-dark);
+            border-bottom-width: 8px;
+            color: white;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0px var(--buzz-green-dark);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .toy-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 3px solid var(--buzz-purple);
+            border-radius: 99px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .toy-btn:hover {
+            background: #A3E635;
+            transform: translateY(-2px);
+            border-bottom-width: 10px;
+            margin-bottom: -2px;
+        }
+
+        .toy-btn:active {
+            background: #65A30D;
+            transform: translateY(4px);
+            border-bottom-width: 4px;
+            margin-bottom: 4px;
+        }
+
+        .toy-btn-danger {
+            background: var(--woody-red);
+            border-color: var(--woody-red-dark);
+            text-shadow: 1px 1px 0px var(--woody-red-dark);
+        }
+        .toy-btn-danger::after {
+            border-color: #FCA5A5;
+        }
+        .toy-btn-danger:hover {
+            background: #F87171;
+        }
+        .toy-btn-danger:active {
+            background: #991B1B;
+        }
+
+        .toy-btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            border-width: 3px;
+            border-bottom-width: 6px;
+        }
+        .toy-btn-small:hover {
+            border-bottom-width: 8px;
+            margin-bottom: -2px;
+        }
+        .toy-btn-small:active {
+            border-bottom-width: 3px;
+            margin-bottom: 3px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            padding: 0.3rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-family: var(--font-heading);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: 2px solid rgba(0,0,0,0.1);
+            color: white;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+        }
+        
+        .badge-success { background: var(--buzz-green); }
+        .badge-warning { background: var(--woody-yellow); color: var(--woody-brown); text-shadow: none; }
+        .badge-danger { background: var(--woody-red); }
+
+        /* Forms */
+        .toy-label {
+            font-family: var(--font-heading);
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .toy-input {
+            width: 100%;
+            background: white;
+            border: 3px solid var(--woody-blue);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            font-weight: 700;
+            color: var(--text-main);
+            transition: var(--transition-bounce);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .toy-input:focus {
+            outline: none;
+            border-color: var(--buzz-purple);
+            transform: scale(1.01);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 0 0 4px rgba(168, 85, 247, 0.3);
+        }
+
+        select.toy-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233B82F6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        /* -------------------------------------
+           Layout Structure (Admin)
+           ------------------------------------- */
+        
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        /* Wooden Plank Sidebar (Woody Theme) */
+        .sidebar {
+            width: 280px;
+            background-color: var(--woody-yellow);
+            /* Wooden texture look */
+            background-image: 
+                repeating-linear-gradient(
+                    to right,
+                    var(--woody-yellow) 0px,
+                    var(--woody-yellow) 20px,
+                    #FCE788 20px,
+                    #FCE788 40px
+                );
+            border-right: 8px solid var(--woody-brown);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            box-shadow: 10px 0 15px rgba(0,0,0,0.2);
+        }
+
+        /* Cow print header inside sidebar */
+        .sidebar-header {
+            background: white;
+            border: 4px solid var(--woody-red);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            box-shadow: inset 0 0 0 4px white, inset 0 0 0 6px var(--woody-red);
+        }
+        
+        .sidebar-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(#000 15%, transparent 16%), radial-gradient(#000 15%, transparent 16%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--woody-red);
+            text-transform: uppercase;
+            z-index: 1;
+            text-shadow: 1px 1px 0 white;
+        }
+        
+        .sidebar-icon {
+            z-index: 1;
+            color: var(--woody-blue);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            color: var(--woody-brown);
+            text-decoration: none;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background-color: white;
+            border-color: var(--woody-brown);
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .sidebar-link.active {
+            background-color: var(--woody-red);
+            color: white;
+            border-color: var(--woody-red-dark);
+            box-shadow: 0 4px 0 var(--woody-red-dark);
+            transform: scale(1.05);
+        }
+
+        .admin-main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 3rem 4rem;
+            min-height: 100vh;
+            /* White overlay to make content readable over clouds */
+            background: rgba(255,255,255,0.7);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border: 4px solid var(--woody-blue);
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 8px 0 rgba(59, 130, 246, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--woody-blue);
+            color: white;
+            font-family: var(--font-heading);
+            padding: 1.25rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            border-bottom: 4px solid #1D4ED8;
+        }
+
+        td {
+            padding: 1.25rem;
+            font-size: 1rem;
+            color: var(--text-main);
+            border-bottom: 2px dashed #BFDBFE;
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #EFF6FF;
+        }
+
+        tbody tr:hover {
+            background-color: #DBEAFE;
+        }
+
+        /* -------------------------------------
+           Mobile Responsive
+           ------------------------------------- */
+        @media (max-width: 1024px) {
+            .admin-main {
+                padding: 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .admin-layout {
+                flex-direction: column;
+            }
+            .admin-main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            .toy-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    @else
+    <!-- Custom CSS Design System - Premium Modern (GENERIC / USER VIEW) -->
     <style>
         :root {
             /* Premium Color Palette - Updated Neon/Glass Style */
@@ -239,117 +653,6 @@
             box-shadow: var(--shadow-xs);
         }
 
-        /* -------------------------------------
-           Layout Structure (Admin)
-           ------------------------------------- */
-        
-        .admin-layout {
-            display: flex;
-            min-height: 100vh;
-            width: 100vw;
-        }
-
-        /* Modern Floating Sidebar */
-        .sidebar {
-            width: 280px;
-            background-color: var(--bg-sidebar);
-            color: white;
-            padding: 2.25rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.05);
-            /* Add a subtle highlight border to the right */
-            border-right: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            padding: 0 0.5rem;
-        }
-
-        .sidebar-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #f8fafc, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 0.9rem;
-            padding: 0.9rem 1.25rem;
-            color: #94a3b8;
-            text-decoration: none;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sidebar-link::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0; width: 0;
-            background: linear-gradient(90deg, var(--primary-soft), transparent);
-            transition: width 0.3s ease;
-            z-index: 0;
-        }
-
-        .sidebar-link > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .sidebar-link:hover {
-            color: white;
-        }
-
-        .sidebar-link:hover::before {
-            width: 100%;
-        }
-
-        .sidebar-link.active {
-            color: var(--primary-light);
-            background-color: rgba(79, 70, 229, 0.15);
-            border-left: 4px solid var(--primary);
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
-            box-shadow: inset 4px 0 0 var(--primary);
-            border-left: none; /* using inset box-shadow instead for smoother rendering */
-        }
-        
-        .sidebar-link.active::before {
-            display: none;
-        }
-
-        .admin-main {
-            margin-left: 280px;
-            flex: 1;
-            padding: 3rem 4rem;
-            min-height: 100vh;
-        }
-
-        /* -------------------------------------
-           Guest / User UI
-           ------------------------------------- */
-        
         .guest-header {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
@@ -393,175 +696,17 @@
             margin-top: auto;
             font-weight: 500;
         }
-
-        /* -------------------------------------
-           Forms & Inputs
-           ------------------------------------- */
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--bg-sidebar);
-            margin-bottom: 0.6rem;
-            letter-spacing: 0.01em;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.95rem 1.25rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            background-color: rgba(255, 255, 255, 0.9);
-            outline: none;
-            font-family: var(--font);
-            font-size: 1rem;
-            color: var(--text-main);
-            transition: var(--transition-smooth);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .form-input:focus {
-            border-color: var(--primary);
-            background-color: white;
-            box-shadow: 0 0 0 4px var(--primary-soft), inset 0 1px 2px rgba(0,0,0,0.01);
-        }
-
-        .form-input::placeholder {
-            color: #94a3b8;
-            font-weight: 400;
-        }
-
-        select.form-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.25rem center;
-            background-size: 1em;
-            padding-right: 3rem;
-            cursor: pointer;
-        }
-
-        /* -------------------------------------
-           Tables (Modern Grid)
-           ------------------------------------- */
-        
-        .table-container {
-            overflow-x: auto;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color);
-            background: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            text-align: left;
-        }
-
-        th {
-            background-color: rgba(248, 250, 252, 0.8);
-            backdrop-filter: blur(8px);
-            padding: 1.25rem 1.5rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        td {
-            padding: 1.25rem 1.5rem;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
-            font-weight: 500;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr {
-            transition: var(--transition-smooth);
-        }
-
-        tbody tr:hover {
-            background-color: #f8fafc;
-            transform: scale(1.001);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-
-        /* -------------------------------------
-           Mobile Responsive
-           ------------------------------------- */
-        @media (max-width: 1024px) {
-            .admin-main {
-                padding: 2rem;
-            }
-        }
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-            .sidebar.mobile-open {
-                transform: translateX(0);
-            }
-            .admin-layout {
-                flex-direction: column;
-            }
-            .admin-main {
-                margin-left: 0;
-                padding: 1.5rem;
-            }
-            .glass-card {
-                padding: 1.75rem;
-            }
-        }
     </style>
+    @endif
 </head>
 <body>
-    @if(Route::is('user.index') || Route::is('login') || Route::is('register'))
-    <div class="ambient-orb orb-1"></div>
-    <div class="ambient-orb orb-2"></div>
-    @endif
-
-    @if(Auth::check() && !Route::is('user.index'))
-        <!-- Admin Layout Shell -->
+    @if(Auth::check() && !Route::is('user.index') && !Route::is('login') && !Route::is('admin.login'))
+        <!-- Admin Layout Shell (Toy Story Theme) -->
         <div class="admin-layout">
             <aside class="sidebar">
                 <div class="sidebar-header">
-                    <div style="background-color: var(--primary); padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
-                        <i data-lucide="qr-code"></i>
-                    </div>
-                    <span class="sidebar-title">Absensi KKN</span>
+                    <i data-lucide="star" class="sidebar-icon" style="width: 28px; height: 28px; fill: #FBBF24;"></i>
+                    <span class="sidebar-title">Absensi</span>
                 </div>
                 
                 <ul class="sidebar-menu">
@@ -572,22 +717,22 @@
                     </li>
                     <li>
                         <a href="{{ route('admin.qr') }}" class="sidebar-link {{ Route::is('admin.qr') ? 'active' : '' }}">
-                            <i data-lucide="scan"></i> Proyektor QR Code
+                            <i data-lucide="scan"></i> Proyektor QR
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.logs') }}" class="sidebar-link {{ Route::is('admin.logs') ? 'active' : '' }}">
-                            <i data-lucide="calendar"></i> Riwayat Mingguan
+                            <i data-lucide="calendar"></i> Riwayat
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.students') }}" class="sidebar-link {{ Route::is('admin.students') ? 'active' : '' }}">
-                            <i data-lucide="users"></i> Data Mahasiswa
+                            <i data-lucide="users"></i> Pemain
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.settings') }}" class="sidebar-link {{ Route::is('admin.settings') ? 'active' : '' }}">
-                            <i data-lucide="settings"></i> Pengaturan Posko
+                            <i data-lucide="settings"></i> Pengaturan
                         </a>
                     </li>
                 </ul>
@@ -595,8 +740,8 @@
                 <div style="margin-top: auto;">
                     <form action="{{ route('admin.logout') }}" method="POST" id="logout-form">
                         @csrf
-                        <button type="submit" class="btn btn-outline" style="width: 100%; border-color: rgba(255,255,255,0.15); color: #94a3b8; justify-content: flex-start;">
-                            <i data-lucide="log-out"></i> Keluar
+                        <button type="submit" class="toy-btn toy-btn-danger" style="width: 100%;">
+                            <i data-lucide="log-out"></i> KELUAR
                         </button>
                     </form>
                 </div>
@@ -607,7 +752,12 @@
             </main>
         </div>
     @else
-        <!-- Guest / User Layout Shell -->
+        <!-- Guest / User Layout Shell (Generic Theme) -->
+        @if(Route::is('user.index') || Route::is('login') || Route::is('register'))
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        @endif
+
         <header class="guest-header">
             <a href="/" class="guest-logo">
                 <i data-lucide="map-pin" style="color: var(--primary);"></i>
@@ -636,6 +786,12 @@
         <div class="guest-container">
             @yield('content')
         </div>
+        
+        @if(Route::is('user.index'))
+        <footer>
+            &copy; {{ date('Y') }} {{ \App\Models\Setting::getValue('kkn_name', 'KKN Posko') }}
+        </footer>
+        @endif
     @endif
 
     <!-- Lucide Icon Initialization -->

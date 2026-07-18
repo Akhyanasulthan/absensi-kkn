@@ -4,42 +4,42 @@
 
 @section('content')
 <div style="margin-bottom: 2.5rem;">
-    <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.04em;">Dashboard Admin</h1>
-    <p style="color: var(--text-muted); font-size: 1rem; margin-top: 0.5rem;">Pantau aktivitas absensi KKN hari ini: <span style="font-weight: 600; color: var(--primary);">{{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('l, d F Y') }}</span></p>
+    <h1 style="font-family: var(--font-heading); font-size: 2.5rem; color: var(--woody-blue); letter-spacing: 1px; text-shadow: 2px 2px 0 white;">Markas Besar Admin</h1>
+    <p style="color: var(--text-main); font-size: 1.1rem; margin-top: 0.5rem; font-weight: 700;">Pantau aktivitas absensi KKN hari ini: <span style="color: var(--woody-red); text-shadow: 1px 1px 0 white;">{{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('l, d F Y') }}</span></p>
 </div>
 
 <!-- Stats Grid -->
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-    <!-- Stat 1 -->
-    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative;">
+    <!-- Stat 1 (Green Block) -->
+    <div class="toy-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative; border-color: var(--buzz-green-dark); background: #DCFCE7;">
         <div>
-            <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Absen Masuk</p>
-            <h3 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; line-height: 1;">{{ $stats['total_check_in'] }}</h3>
+            <p style="font-size: 0.9rem; font-family: var(--font-heading); color: var(--buzz-green-dark); text-transform: uppercase; letter-spacing: 1px;">Absen Masuk</p>
+            <h3 style="font-size: 3rem; font-weight: 900; color: #14532D; margin-top: 0.5rem; line-height: 1;">{{ $stats['total_check_in'] }}</h3>
         </div>
-        <div style="background: var(--success-light); color: var(--success); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(5, 150, 105, 0.2);">
-            <i data-lucide="log-in" style="width: 32px; height: 32px;"></i>
+        <div style="background: var(--buzz-green); color: white; width: 70px; height: 70px; border-radius: 16px; border: 4px solid var(--buzz-green-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 0 var(--buzz-green-dark);">
+            <i data-lucide="log-in" style="width: 36px; height: 36px;"></i>
         </div>
     </div>
 
-    <!-- Stat 2 -->
-    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative;">
+    <!-- Stat 2 (Red Block) -->
+    <div class="toy-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative; border-color: var(--woody-red-dark); background: #FEE2E2;">
         <div>
-            <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Absen Pulang</p>
-            <h3 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; line-height: 1;">{{ $stats['total_check_out'] }}</h3>
+            <p style="font-size: 0.9rem; font-family: var(--font-heading); color: var(--woody-red-dark); text-transform: uppercase; letter-spacing: 1px;">Absen Pulang</p>
+            <h3 style="font-size: 3rem; font-weight: 900; color: #7F1D1D; margin-top: 0.5rem; line-height: 1;">{{ $stats['total_check_out'] }}</h3>
         </div>
-        <div style="background: var(--primary-soft); color: var(--primary); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(79, 70, 229, 0.2);">
-            <i data-lucide="log-out" style="width: 32px; height: 32px;"></i>
+        <div style="background: var(--woody-red); color: white; width: 70px; height: 70px; border-radius: 16px; border: 4px solid var(--woody-red-dark); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 0 var(--woody-red-dark);">
+            <i data-lucide="log-out" style="width: 36px; height: 36px;"></i>
         </div>
     </div>
 
-    <!-- Stat 3 -->
-    <div class="glass-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative;">
+    <!-- Stat 3 (Blue Block) -->
+    <div class="toy-card" style="padding: 1.75rem; display: flex; align-items: center; justify-content: space-between; position: relative; border-color: #1E3A8A; background: #DBEAFE;">
         <div>
-            <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Total Aktivitas</p>
-            <h3 style="font-size: 2.5rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; line-height: 1;">{{ $stats['total_attendance'] }}</h3>
+            <p style="font-size: 0.9rem; font-family: var(--font-heading); color: #1E3A8A; text-transform: uppercase; letter-spacing: 1px;">Total Aktivitas</p>
+            <h3 style="font-size: 3rem; font-weight: 900; color: #1E3A8A; margin-top: 0.5rem; line-height: 1;">{{ $stats['total_attendance'] }}</h3>
         </div>
-        <div style="background: #f1f5f9; color: var(--bg-sidebar); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color);">
-            <i data-lucide="database" style="width: 32px; height: 32px;"></i>
+        <div style="background: var(--woody-blue); color: white; width: 70px; height: 70px; border-radius: 16px; border: 4px solid #1E3A8A; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 0 #1E3A8A;">
+            <i data-lucide="database" style="width: 36px; height: 36px;"></i>
         </div>
     </div>
 </div>
@@ -47,14 +47,14 @@
 <!-- Shortcuts and Activity Row -->
 <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
     <!-- Latest Scan Logs -->
-    <div class="glass-card" style="padding: 0; overflow: hidden;">
-        <div style="padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); background: rgba(255,255,255,0.5);">
+    <div class="toy-card" style="padding: 0; overflow: hidden;">
+        <div style="padding: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 4px solid var(--woody-blue); background: #EFF6FF;">
             <div>
-                <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">Log Absensi Hari Ini</h3>
-                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">Aktivitas terbaru mahasiswa KKN posko hari ini</p>
+                <h3 style="font-size: 1.5rem; font-family: var(--font-heading); color: var(--woody-blue); letter-spacing: 1px;">Log Pemain Hari Ini</h3>
+                <p style="color: var(--text-muted); font-size: 1rem; margin-top: 0.25rem; font-weight: 700;">Aktivitas terbaru mainan KKN posko hari ini</p>
             </div>
-            <a href="{{ route('admin.logs') }}" class="btn btn-outline">
-                Lihat Laporan Lengkap <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+            <a href="{{ route('admin.logs') }}" class="toy-btn toy-btn-small">
+                Lihat Lengkap <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
             </a>
         </div>
 
@@ -73,30 +73,30 @@
                 <tbody>
                     @forelse ($stats['latest_activity'] as $log)
                         <tr>
-                            <td style="font-weight: 600;">{{ $log->name }}</td>
+                            <td style="font-weight: 800; color: var(--woody-blue);">{{ $log->name }}</td>
                             <td>{{ $log->division }}</td>
                             <td style="white-space: nowrap;">
-                                <span class="badge" style="white-space: nowrap; background-color: var(--success-light); color: var(--success);">
+                                <span class="badge badge-success">
                                     {{ $log->check_in ? 'Hadir - ' . \Carbon\Carbon::parse($log->check_in)->format('H:i:s') : '-' }}
                                 </span>
                             </td>
                             <td style="white-space: nowrap;">
-                                <span class="badge" style="white-space: nowrap; {{ $log->check_out ? 'background-color: var(--primary-light); color: var(--primary);' : 'background-color: #f1f5f9; color: var(--text-muted);' }}">
+                                <span class="badge {{ $log->check_out ? 'badge-success' : 'badge-warning' }}">
                                     {{ $log->check_out ? 'Pulang - ' . \Carbon\Carbon::parse($log->check_out)->format('H:i:s') : 'Belum Pulang' }}
                                 </span>
                             </td>
                             <td style="white-space: nowrap;">
-                                <span class="badge" style="
-                                    @if($log->status === 'Present') background-color: var(--success-light); color: var(--success);
-                                    @elseif($log->status === 'Late') background-color: var(--warning-light); color: var(--warning);
-                                    @else background-color: var(--danger-light); color: var(--danger); @endif">
+                                <span class="badge 
+                                    @if($log->status === 'Present') badge-success 
+                                    @elseif($log->status === 'Late') badge-warning 
+                                    @else badge-danger @endif">
                                     {{ $log->status }}
                                 </span>
                             </td>
-                            <td style="font-family: monospace; font-size: 0.85rem;">
+                            <td style="font-family: monospace; font-size: 0.9rem;">
                                 @if($log->check_in_latitude)
-                                    <a href="https://maps.google.com/?q={{ $log->check_in_latitude }},{{ $log->check_in_longitude }}" target="_blank" style="color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; font-weight: 500;">
-                                        <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> {{ round($log->check_in_latitude, 5) }}, {{ round($log->check_in_longitude, 5) }}
+                                    <a href="https://maps.google.com/?q={{ $log->check_in_latitude }},{{ $log->check_in_longitude }}" target="_blank" style="color: var(--woody-red); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; font-weight: 700;">
+                                        <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i> {{ round($log->check_in_latitude, 5) }}, {{ round($log->check_in_longitude, 5) }}
                                     </a>
                                 @else
                                     <span style="color: var(--text-muted);">-</span>
@@ -106,8 +106,8 @@
                     @empty
                         <tr>
                             <td colspan="6" style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
-                                <i data-lucide="inbox" style="margin: 0 auto 1rem auto; display: block; width: 48px; height: 48px; opacity: 0.5;"></i>
-                                <span style="font-size: 1.1rem; font-weight: 500;">Belum ada aktivitas absensi hari ini.</span>
+                                <i data-lucide="inbox" style="margin: 0 auto 1rem auto; display: block; width: 64px; height: 64px; opacity: 0.3; color: var(--woody-blue);"></i>
+                                <span style="font-size: 1.2rem; font-family: var(--font-heading);">Tidak ada mainan yang absen hari ini.</span>
                             </td>
                         </tr>
                     @endforelse
