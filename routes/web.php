@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/login', [AdminController::class, 'showLogin'])->name('login');
 Route::post('/login', [AdminController::class, 'login'])->name('login.submit');
 Route::match(['get', 'post'], '/logout', [AdminController::class, 'logout'])->name('logout');
+Route::get('/keluar', [AdminController::class, 'logout'])->name('user.logout');
 
 // Backwards compatibility redirects for old URLs
 Route::get('/admin/login', function () { return redirect()->route('login'); })->name('admin.login');
