@@ -17,25 +17,25 @@
     <!-- Custom CSS Design System - Premium Modern -->
     <style>
         :root {
-            /* Premium Color Palette */
-            --primary: #4f46e5; /* Indigo 600 */
-            --primary-hover: #4338ca; /* Indigo 700 */
-            --primary-light: #e0e7ff; /* Indigo 100 */
-            --primary-soft: rgba(79, 70, 229, 0.08);
+            /* Premium Color Palette - Updated Neon/Glass Style */
+            --primary: #6366f1; /* Indigo 500 */
+            --primary-hover: #4f46e5; /* Indigo 600 */
+            --primary-light: #e0e7ff; 
+            --primary-soft: rgba(99, 102, 241, 0.12);
             
-            --success: #059669;
-            --success-hover: #047857;
+            --success: #10b981; /* Emerald 500 */
+            --success-hover: #059669; /* Emerald 600 */
             --success-light: #d1fae5;
             
-            --warning: #d97706;
+            --warning: #f59e0b; /* Amber 500 */
             --warning-light: #fef3c7;
             
-            --danger: #dc2626;
+            --danger: #ef4444; /* Red 500 */
             --danger-light: #fee2e2;
             
             /* Backgrounds & Surfaces */
-            --bg-main: #f4f7f9; /* Very light cool grey */
-            --bg-sidebar: #0b1121; /* Deep space dark */
+            --bg-main: #f8fafc; /* Lighter cool grey */
+            --bg-sidebar: #0f172a; /* Slate 900 */
             --bg-sidebar-hover: #1e293b;
             
             /* Text Colors */
@@ -45,16 +45,16 @@
             
             /* UI Elements */
             --border-color: #e2e8f0;
-            --border-light: rgba(255, 255, 255, 0.6);
-            --card-bg: rgba(255, 255, 255, 0.85);
+            --border-light: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.65);
             
             /* Refined Shadows */
             --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            --shadow-glow: 0 10px 20px -5px rgba(79, 70, 229, 0.35);
-            --shadow-glow-success: 0 10px 20px -5px rgba(5, 150, 105, 0.35);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-glow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+            --shadow-glow-success: 0 10px 25px -5px rgba(16, 185, 129, 0.5);
             
             /* Border Radii */
             --radius-sm: 10px;
@@ -67,7 +67,7 @@
             
             /* Transitions */
             --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -78,15 +78,19 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        @keyframes meshAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
             font-family: var(--font);
-            background-color: var(--bg-main);
-            /* Premium Mesh Gradient Background */
-            background-image: 
-                radial-gradient(at 10% 10%, rgba(99, 102, 241, 0.04) 0px, transparent 50%),
-                radial-gradient(at 90% 10%, rgba(16, 185, 129, 0.03) 0px, transparent 50%),
-                radial-gradient(at 50% 90%, rgba(239, 68, 68, 0.03) 0px, transparent 50%);
-            background-attachment: fixed;
+            background-color: #f1f5f9;
+            /* Dynamic animated gradient background */
+            background: linear-gradient(-45deg, #e2e8f0, #e0e7ff, #f8fafc, #f1f5f9);
+            background-size: 400% 400%;
+            animation: meshAnimation 15s ease infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -95,34 +99,54 @@
             line-height: 1.6;
         }
 
+        /* Ambient floating orbs for extra premium feel on user view */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: rgba(99, 102, 241, 0.2);
+            top: -100px; left: -100px;
+        }
+        .orb-2 {
+            width: 300px; height: 300px;
+            background: rgba(16, 185, 129, 0.15);
+            bottom: -50px; right: -50px;
+            animation-delay: -5s;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
         /* -------------------------------------
            Utility & Component Styles
            ------------------------------------- */
         
         .glass-card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-md), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
             border-radius: var(--radius-lg);
             padding: 2.25rem;
             transition: var(--transition-smooth);
             position: relative;
             overflow: hidden;
         }
-        
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            opacity: 0.5;
-        }
 
         .glass-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
         }
 
         .btn {
@@ -130,10 +154,10 @@
             align-items: center;
             justify-content: center;
             gap: 0.6rem;
-            padding: 0.85rem 1.75rem;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 0.01em;
+            padding: 0.95rem 1.85rem;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
             border-radius: var(--radius-md);
             border: none;
             cursor: pointer;
@@ -142,45 +166,63 @@
             font-family: var(--font);
             position: relative;
             overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(255,255,255,0.1), transparent);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover::before {
+            opacity: 1;
         }
 
         .btn:active {
-            transform: scale(0.96);
+            transform: scale(0.96) translateY(2px);
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: white;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
         .btn-primary:hover {
             box-shadow: var(--shadow-glow);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .btn-success {
             background: linear-gradient(135deg, var(--success), var(--success-hover));
             color: white;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .btn-success:hover {
             box-shadow: var(--shadow-glow-success);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .btn-outline {
-            background-color: white;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             box-shadow: var(--shadow-xs);
         }
 
         .btn-outline:hover {
-            background-color: #f8fafc;
+            background: rgba(255, 255, 255, 0.95);
             border-color: #cbd5e1;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-sm);
         }
         
@@ -506,6 +548,10 @@
     </style>
 </head>
 <body>
+    @if(Route::is('user.index') || Route::is('login') || Route::is('register'))
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    @endif
 
     @if(Auth::check() && !Route::is('user.index'))
         <!-- Admin Layout Shell -->

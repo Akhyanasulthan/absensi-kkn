@@ -3,12 +3,12 @@
 @section('title', 'Absensi Mahasiswa')
 
 @section('content')
-<div style="margin-bottom: 2.5rem; text-align: center; margin-top: 1rem;">
-    <span class="badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; margin-bottom: 1rem; padding: 0.5rem 1rem; font-size: 0.85rem; box-shadow: var(--shadow-glow);">
-        KKN PAKUHAJI 2026
+<div style="margin-bottom: 2.5rem; text-align: center; margin-top: 1rem; position: relative; z-index: 2;">
+    <span class="badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; margin-bottom: 1rem; padding: 0.5rem 1.25rem; font-size: 0.85rem; box-shadow: var(--shadow-glow); border: 1px solid rgba(255,255,255,0.2);">
+        KKN POSKO 2026
     </span>
-    <h1 style="font-size: 2.25rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--bg-sidebar), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Presensi Digital</h1>
-    <p style="color: var(--text-muted); font-size: 1.05rem; margin-top: 0.5rem; font-weight: 500;">Silakan pilih nama Anda dan lakukan absensi.</p>
+    <h1 style="font-size: 2.75rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; letter-spacing: -0.04em; background: linear-gradient(135deg, #0f172a, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 2px 4px rgba(0,0,0,0.1));">Presensi Digital</h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; font-weight: 500;">Pantau kehadiran harian Anda dengan mudah.</p>
 </div>
 
 <!-- Barcode/Token Detection Status Widget -->
@@ -41,22 +41,22 @@
 @endif
 
 <!-- GPS/Geofence Status Widget -->
-<div class="glass-card" style="padding: 1.5rem; border-radius: var(--radius-xl); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+<div class="glass-card" style="padding: 1.5rem; border-radius: var(--radius-xl); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; background: rgba(255, 255, 255, 0.45);">
     <div style="display: flex; align-items: center; gap: 1.25rem;">
-        <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
-            <div id="gps-indicator" style="width: 14px; height: 14px; background-color: var(--warning); border-radius: 50%; z-index: 2; box-shadow: 0 0 10px var(--warning);"></div>
-            <div id="gps-pulse" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--warning); border-radius: 50%; animation: pulse-gps 2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; opacity: 0.6;"></div>
+        <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; background: rgba(255,255,255,0.7); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5);">
+            <div id="gps-indicator" style="width: 14px; height: 14px; background-color: var(--warning); border-radius: 50%; z-index: 2; box-shadow: 0 0 15px var(--warning); transition: background-color 0.4s ease, box-shadow 0.4s ease;"></div>
+            <div id="gps-pulse" style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border: 2px solid var(--warning); border-radius: 50%; animation: pulse-gps 2.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; opacity: 0.8; transition: border-color 0.4s ease;"></div>
         </div>
         <div>
-            <div id="gps-status-title" style="font-weight: 800; font-size: 1.05rem; color: var(--text-main); letter-spacing: -0.01em;">Mendeteksi GPS...</div>
+            <div id="gps-status-title" style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); letter-spacing: -0.01em;">Mendeteksi GPS...</div>
             <div id="gps-status-desc" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.15rem; font-weight: 500;">Izinkan akses lokasi pada browser.</div>
         </div>
     </div>
     <div style="display: flex; gap: 0.85rem; align-items: center;">
-        <div id="gps-distance-badge" class="badge" style="display: none; background-color: #f1f5f9; color: var(--text-main); font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.85rem;">
+        <div id="gps-distance-badge" class="badge" style="display: none; background-color: rgba(255,255,255,0.8); color: var(--text-main); font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);">
             -
         </div>
-        <button type="button" onclick="refreshLocation()" class="btn btn-outline" style="padding: 0.6rem; border-radius: 50%; width: 42px; height: 42px;" title="Perbarui Lokasi GPS">
+        <button type="button" onclick="refreshLocation()" class="btn btn-outline" style="padding: 0.6rem; border-radius: 50%; width: 44px; height: 44px; background: rgba(255,255,255,0.7); box-shadow: 0 2px 5px rgba(0,0,0,0.05);" title="Perbarui Lokasi GPS">
             <i data-lucide="refresh-cw" style="width: 20px; height: 20px; color: var(--text-muted);"></i>
         </button>
     </div>
@@ -141,9 +141,8 @@
 
 <style>
     @keyframes pulse-gps {
-        0% { transform: scale(0.8); opacity: 0.8; }
-        50% { opacity: 0.4; }
-        100% { transform: scale(3); opacity: 0; }
+        0% { transform: scale(0.6); opacity: 1; }
+        100% { transform: scale(2.5); opacity: 0; }
     }
     .animate-spin {
         animation: spin 1s infinite linear;
@@ -335,24 +334,29 @@
         if (success) {
             if (inside) {
                 indicator.style.backgroundColor = 'var(--success)';
-                indicator.style.boxShadow = '0 0 12px var(--success)';
+                indicator.style.boxShadow = '0 0 15px var(--success)';
+                document.getElementById('gps-pulse').style.borderColor = 'var(--success)';
+                
                 badge.style.display = 'block';
-                badge.style.backgroundColor = 'var(--success-light)';
-                badge.style.color = 'var(--success)';
-                badge.style.borderColor = 'rgba(16, 185, 129, 0.2)';
+                badge.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+                badge.style.color = 'var(--success-hover)';
+                badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
                 badge.innerText = `${distance.toFixed(0)}m`;
             } else {
                 indicator.style.backgroundColor = 'var(--danger)';
-                indicator.style.boxShadow = '0 0 12px var(--danger)';
+                indicator.style.boxShadow = '0 0 15px var(--danger)';
+                document.getElementById('gps-pulse').style.borderColor = 'var(--danger)';
+                
                 badge.style.display = 'block';
-                badge.style.backgroundColor = 'var(--danger-light)';
+                badge.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
                 badge.style.color = 'var(--danger)';
-                badge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                badge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
                 badge.innerText = `${distance.toFixed(0)}m`;
             }
         } else {
             indicator.style.backgroundColor = 'var(--danger)';
-            indicator.style.boxShadow = '0 0 12px var(--danger)';
+            indicator.style.boxShadow = '0 0 15px var(--danger)';
+            document.getElementById('gps-pulse').style.borderColor = 'var(--danger)';
         }
     }
 
