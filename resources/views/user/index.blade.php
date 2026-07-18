@@ -3,453 +3,488 @@
 @section('title', 'Absensi Mahasiswa')
 
 @section('content')
-<div style="margin-bottom: 2.5rem; text-align: center; margin-top: 1rem; position: relative; z-index: 2;">
-    <span class="badge" style="background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; margin-bottom: 1rem; padding: 0.5rem 1.25rem; font-size: 0.85rem; box-shadow: var(--shadow-glow); border: 1px solid rgba(255,255,255,0.2);">
-        KKN POSKO 2026
-    </span>
-    <h1 style="font-size: 2.75rem; font-weight: 800; color: var(--text-main); margin-top: 0.5rem; letter-spacing: -0.04em; background: linear-gradient(135deg, #0f172a, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 2px 4px rgba(0,0,0,0.1));">Presensi Digital</h1>
-    <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; font-weight: 500;">Pantau kehadiran harian Anda dengan mudah.</p>
+<style>
+    /* Scoped Dark Mode & Neumorphism Overrides */
+    body {
+        background-color: #09090b !important; /* Zinc 950 */
+        background-image: none !important;
+        color: #f8fafc !important;
+    }
+    
+    .ambient-orb {
+        filter: blur(100px);
+        opacity: 0.8;
+    }
+    .orb-1 {
+        background: rgba(139, 92, 246, 0.25) !important; /* Violet */
+    }
+    .orb-2 {
+        background: rgba(16, 185, 129, 0.2) !important; /* Emerald */
+    }
+
+    .guest-header {
+        background: rgba(9, 9, 11, 0.7) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .guest-logo {
+        color: #f8fafc !important;
+    }
+
+    .radical-card {
+        background: rgba(24, 24, 27, 0.6); /* Zinc 900 */
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border-radius: 32px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .user-profile-badge {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 800;
+        color: white;
+        box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5);
+        border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .radar-container {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        margin: 2.5rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(39, 39, 42, 0.8) 0%, rgba(9, 9, 11, 0.4) 100%);
+        border: 1px solid rgba(255,255,255,0.05);
+        box-shadow: inset 0 0 40px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .radar-circle {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .radar-c1 { width: 100%; height: 100%; }
+    .radar-c2 { width: 66%; height: 66%; border-style: dashed; }
+    .radar-c3 { width: 33%; height: 33%; }
+
+    .radar-dot {
+        width: 20px;
+        height: 20px;
+        background: #f59e0b;
+        border-radius: 50%;
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 0 20px #f59e0b;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .radar-sweep {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 0;
+        left: 50%;
+        transform-origin: bottom left;
+        background: linear-gradient(45deg, rgba(16, 185, 129, 0.8), transparent);
+        border-radius: 100% 0 0 0;
+        animation: radar-spin 3s linear infinite;
+        opacity: 0.3;
+        display: none;
+    }
+
+    @keyframes radar-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .radar-pulse {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px; height: 20px;
+        border-radius: 50%;
+        border: 2px solid #f59e0b;
+        animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+
+    @keyframes pulse-ring {
+        0% { width: 20px; height: 20px; opacity: 1; }
+        100% { width: 150px; height: 150px; opacity: 0; }
+    }
+
+    .btn-neon {
+        width: 100%;
+        padding: 1.5rem;
+        border-radius: 24px;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+        color: white;
+    }
+
+    .btn-neon::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(rgba(255,255,255,0.2), transparent);
+        z-index: 1;
+    }
+
+    .btn-neon > * { position: relative; z-index: 2; }
+
+    .btn-neon-in {
+        background: linear-gradient(135deg, #10b981, #047857);
+        box-shadow: 0 15px 35px -5px rgba(16, 185, 129, 0.6), inset 0 2px 5px rgba(255,255,255,0.4);
+        border: 1px solid #34d399;
+    }
+
+    .btn-neon-out {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        box-shadow: 0 15px 35px -5px rgba(59, 130, 246, 0.6), inset 0 2px 5px rgba(255,255,255,0.4);
+        border: 1px solid #60a5fa;
+    }
+
+    .btn-neon:hover:not(:disabled) {
+        transform: translateY(-5px) scale(1.02);
+        filter: brightness(1.1);
+    }
+    
+    .btn-neon:active:not(:disabled) {
+        transform: translateY(2px) scale(0.98);
+    }
+
+    .btn-neon:disabled {
+        background: #3f3f46;
+        box-shadow: none;
+        border-color: #52525b;
+        color: #a1a1aa;
+        cursor: not-allowed;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .fade-up {
+        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<!-- Radical Profile Card -->
+<div class="radical-card fade-up" style="margin-bottom: 2rem;">
+    <div class="user-profile-badge">
+        <div class="avatar-circle">
+            {{ substr(Auth::user()->name, 0, 1) }}
+        </div>
+        <div>
+            <div style="font-size: 0.9rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;">Selamat Datang</div>
+            <h2 style="font-size: 1.75rem; font-weight: 800; margin: 0.25rem 0; color: white;">{{ Auth::user()->name }}</h2>
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1);">
+                <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #34d399;"></i> {{ Auth::user()->division }}
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Barcode/Token Detection Status Widget -->
+<!-- QR Alert (If Needed) -->
 @if(empty($token))
-    <div class="glass-card" id="scan-container" style="padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; background-color: var(--danger-light); border: 1px solid rgba(239, 68, 68, 0.2); color: #991b1b; display: flex; flex-direction: column; align-items: center; gap: 1rem; box-shadow: none;">
-        <i data-lucide="alert-triangle" style="width: 24px; height: 24px; color: var(--danger);"></i>
-        <div style="text-align: center;">
-            <strong style="display: block; font-size: 1rem; margin-bottom: 0.25rem; font-weight: 700;">Barcode Tidak Terdeteksi!</strong>
-            <span style="font-size: 0.9rem; opacity: 0.9;">Silakan scan QR Code di layar admin menggunakan fitur di bawah.</span>
-        </div>
-        <button type="button" onclick="startScanner()" class="btn btn-primary" style="margin-top: 0.5rem; border-radius: var(--radius-md); font-size: 0.9rem; padding: 0.75rem 1.25rem;">
-            <i data-lucide="camera" style="width: 18px; height: 18px; margin-right: 0.5rem;"></i> Buka Kamera & Scan
+    <div class="radical-card fade-up delay-1" id="scan-container" style="margin-bottom: 2rem; background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.3); text-align: center;">
+        <i data-lucide="alert-triangle" style="width: 48px; height: 48px; color: #f87171; margin: 0 auto 1rem auto; display: block;"></i>
+        <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">QR Code Dibutuhkan</h3>
+        <p style="color: #fca5a5; font-size: 0.95rem; margin-bottom: 1.5rem;">Silakan arahkan kamera ke layar proyektor posko untuk membuka akses absensi.</p>
+        <button type="button" onclick="startScanner()" class="btn-neon btn-neon-out" style="padding: 1rem; border-radius: 16px; font-size: 1rem; width: auto; display: inline-flex; flex-direction: row;">
+            <i data-lucide="scan"></i> Mulai Scan
         </button>
-        <div id="reader" style="width: 100%; max-width: 400px; display: none; margin-top: 1rem; border-radius: var(--radius-md); overflow: hidden; background: white;"></div>
+        <div id="reader" style="width: 100%; max-width: 300px; display: none; margin: 1.5rem auto 0 auto; border-radius: 16px; overflow: hidden; background: white;"></div>
     </div>
     
-    <div class="glass-card" id="scan-success-container" style="display: none; padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; background-color: var(--success-light); border: 1px solid rgba(16, 185, 129, 0.2); color: #065f46; align-items: center; gap: 1rem; box-shadow: none;">
-        <i data-lucide="qr-code" style="width: 24px; height: 24px; color: var(--success); flex-shrink: 0;"></i>
-        <div style="font-weight: 600; font-size: 0.95rem;">
-            Barcode Terverifikasi. Lokasi Anda sedang dilacak.
-        </div>
+    <div class="radical-card fade-up delay-1" id="scan-success-container" style="display: none; margin-bottom: 2rem; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); align-items: center; justify-content: center; gap: 1rem;">
+        <i data-lucide="check-circle" style="width: 32px; height: 32px; color: #34d399;"></i>
+        <div style="color: white; font-weight: 700; font-size: 1.1rem;">Akses Terbuka</div>
     </div>
 @else
-    <div class="glass-card" style="padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; background-color: var(--success-light); border: 1px solid rgba(16, 185, 129, 0.2); color: #065f46; display: flex; align-items: center; gap: 1rem; box-shadow: none;">
-        <i data-lucide="qr-code" style="width: 24px; height: 24px; color: var(--success); flex-shrink: 0;"></i>
-        <div style="font-weight: 600; font-size: 0.95rem;">
-            Barcode Terverifikasi. Lokasi Anda sedang dilacak.
-        </div>
+    <div class="radical-card fade-up delay-1" style="margin-bottom: 2rem; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 1rem;">
+        <i data-lucide="unlock" style="width: 24px; height: 24px; color: #34d399;"></i>
+        <div style="color: white; font-weight: 700; font-size: 1rem;">Sesi Aktif</div>
     </div>
 @endif
 
-<!-- GPS/Geofence Status Widget -->
-<div class="glass-card" style="padding: 1.5rem; border-radius: var(--radius-xl); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; background: rgba(255, 255, 255, 0.45);">
-    <div style="display: flex; align-items: center; gap: 1.25rem;">
-        <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; background: rgba(255,255,255,0.7); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5);">
-            <div id="gps-indicator" style="width: 14px; height: 14px; background-color: var(--warning); border-radius: 50%; z-index: 2; box-shadow: 0 0 15px var(--warning); transition: background-color 0.4s ease, box-shadow 0.4s ease;"></div>
-            <div id="gps-pulse" style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border: 2px solid var(--warning); border-radius: 50%; animation: pulse-gps 2.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; opacity: 0.8; transition: border-color 0.4s ease;"></div>
-        </div>
-        <div>
-            <div id="gps-status-title" style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); letter-spacing: -0.01em;">Mendeteksi GPS...</div>
-            <div id="gps-status-desc" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.15rem; font-weight: 500;">Izinkan akses lokasi pada browser.</div>
+<!-- Interactive GPS Radar -->
+<div class="radical-card fade-up delay-2" style="text-align: center; margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="color: white; font-size: 1.25rem; font-weight: 800;">Radar Lokasi</h3>
+        <button type="button" onclick="refreshLocation()" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 0.5rem; border-radius: 50%; cursor: pointer;">
+            <i data-lucide="refresh-cw" style="width: 18px; height: 18px;" class="icon-spin-target"></i>
+        </button>
+    </div>
+
+    <div class="radar-container">
+        <div class="radar-circle radar-c1"></div>
+        <div class="radar-circle radar-c2"></div>
+        <div class="radar-circle radar-c3"></div>
+        
+        <div class="radar-sweep" id="radar-sweep"></div>
+        
+        <div class="radar-dot" id="radar-dot">
+            <div class="radar-pulse" id="radar-pulse"></div>
         </div>
     </div>
-    <div style="display: flex; gap: 0.85rem; align-items: center;">
-        <div id="gps-distance-badge" class="badge" style="display: none; background-color: rgba(255,255,255,0.8); color: var(--text-main); font-weight: 700; padding: 0.5rem 0.85rem; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);">
-            -
-        </div>
-        <button type="button" onclick="refreshLocation()" class="btn btn-outline" style="padding: 0.6rem; border-radius: 50%; width: 44px; height: 44px; background: rgba(255,255,255,0.7); box-shadow: 0 2px 5px rgba(0,0,0,0.05);" title="Perbarui Lokasi GPS">
-            <i data-lucide="refresh-cw" style="width: 20px; height: 20px; color: var(--text-muted);"></i>
-        </button>
+
+    <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem; margin-top: -1rem; position: relative; z-index: 20; border: 1px solid rgba(255,255,255,0.05);">
+        <div id="gps-status-title" style="color: white; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem;">Menghubungkan Satelit...</div>
+        <div id="gps-distance-text" style="color: #a1a1aa; font-size: 0.9rem;">Mencari sinyal GPS terbaik</div>
     </div>
 </div>
 
-<!-- Main Attendance Form -->
-<div class="glass-card" style="position: relative;">
+<!-- Info & Actions -->
+<div class="radical-card fade-up delay-3">
     
-    <!-- Disable overlay if token is missing -->
-    @if(empty($token))
-        <div id="form-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 10; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;"></div>
-    @endif
+    <div class="info-grid">
+        <div class="info-box">
+            <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">Jam Masuk</div>
+            <div style="color: white; font-weight: 800; font-size: 1.1rem;">{{ $settings['check_in_start'] }} - {{ $settings['check_in_end'] }}</div>
+        </div>
+        <div class="info-box">
+            <div style="color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">Jam Pulang</div>
+            <div style="color: white; font-weight: 800; font-size: 1.1rem;">Mulai {{ $settings['check_out_start'] }}</div>
+        </div>
+    </div>
 
     <form id="attendance-form" onsubmit="event.preventDefault();">
-        
-        <!-- Hidden input to store scanned QR token -->
         <input type="hidden" id="qr_data" value="{{ $token }}">
-
-        <div class="form-group" style="margin-bottom: 2rem;">
-            <label class="form-label">Identitas Mahasiswa</label>
-            <div style="padding: 1rem 1.25rem; background-color: rgba(255,255,255,0.8); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1.05rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);">
-                <div>
-                    <div style="color: var(--text-main);">{{ Auth::user()->name }}</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">{{ Auth::user()->division }}</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Check Time Info -->
-        <div style="background-color: rgba(255,255,255,0.5); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2.5rem; font-size: 0.95rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 1rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="display: flex; align-items: center; gap: 0.6rem; font-weight: 600;"><i data-lucide="clock" style="width: 18px; height: 18px; color: var(--success);"></i> Masuk</span>
-                <strong style="color: var(--text-main);">{{ $settings['check_in_start'] }} - {{ $settings['check_in_end'] }} WIB</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="display: flex; align-items: center; gap: 0.6rem; font-weight: 600;"><i data-lucide="clock" style="width: 18px; height: 18px; color: var(--primary);"></i> Pulang</span>
-                <strong style="color: var(--text-main);">Mulai {{ $settings['check_out_start'] }} WIB</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 1rem; margin-top: 0.25rem;">
-                <span style="display: flex; align-items: center; gap: 0.6rem; font-weight: 600;"><i data-lucide="map-pin" style="width: 18px; height: 18px; color: var(--warning);"></i> Radius Posko</span>
-                <strong style="color: var(--bg-sidebar);">{{ $settings['radius'] }} meter</strong>
-            </div>
-        </div>
-
-        <!-- Submit Triggers -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-            <button type="button" id="btn-masuk" onclick="submitAttendance('masuk')" class="btn btn-success" @if(empty($token)) disabled @endif style="padding: 1.5rem 0.5rem; flex-direction: column; gap: 0.5rem; border-radius: var(--radius-lg);">
-                <span style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; letter-spacing: -0.01em;"><i data-lucide="log-in" style="width: 24px; height: 24px;"></i> Absen Masuk</span>
-                <span style="font-size: 0.8rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.03em;">{{ $settings['check_in_start'] }} - {{ $settings['check_in_end'] }}</span>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <button type="button" id="btn-masuk" onclick="submitAttendance('masuk')" class="btn-neon btn-neon-in" @if(empty($token)) disabled @endif>
+                <i data-lucide="fingerprint" style="width: 32px; height: 32px;"></i>
+                Absen Masuk
             </button>
-            <button type="button" id="btn-pulang" onclick="submitAttendance('pulang')" class="btn btn-primary" @if(empty($token)) disabled @endif style="padding: 1.5rem 0.5rem; flex-direction: column; gap: 0.5rem; border-radius: var(--radius-lg);">
-                <span style="display: flex; align-items: center; gap: 0.5rem; font-size: 1.15rem; letter-spacing: -0.01em;"><i data-lucide="log-out" style="width: 24px; height: 24px;"></i> Absen Pulang</span>
-                <span style="font-size: 0.8rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.03em;">Mulai {{ $settings['check_out_start'] }}</span>
+            <button type="button" id="btn-pulang" onclick="submitAttendance('pulang')" class="btn-neon btn-neon-out" @if(empty($token)) disabled @endif>
+                <i data-lucide="log-out" style="width: 32px; height: 32px;"></i>
+                Absen Pulang
             </button>
         </div>
-    </form>
-
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
     </form>
 </div>
 
-<!-- Success / Error Animated Feedback Modal -->
-<div id="feedback-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1100; display: none; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; transition: opacity 0.3s ease;">
-    <div class="glass-card" style="width: 100%; max-width: 420px; text-align: center; background: white; padding: 3.5rem 2.5rem; transform: scale(0.85); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: var(--radius-xl);">
-        
-        <!-- Feedback Icon Holder -->
+<!-- Modal Overlay remains mostly same but styled dark -->
+<div id="feedback-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1100; display: none; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="radical-card" style="width: 100%; max-width: 420px; text-align: center; transform: scale(0.85); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);">
         <div id="feedback-icon-container" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; font-size: 2rem;">
-            <!-- Dynamic icon inserted by JS -->
         </div>
-
-        <h3 id="feedback-title" style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem; letter-spacing: -0.02em;">Presensi Sukses</h3>
-        <p id="feedback-message" style="color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2.5rem;">
-            Presensi Anda berhasil masuk.
-        </p>
-
-        <button onclick="closeFeedbackModal()" class="btn btn-outline" style="width: 100%; justify-content: center; padding: 1rem;">
-            Tutup
-        </button>
+        <h3 id="feedback-title" style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 0.75rem;">Status</h3>
+        <p id="feedback-message" style="color: #a1a1aa; font-size: 1rem; line-height: 1.6; margin-bottom: 2.5rem;">Pesan</p>
+        <button onclick="closeFeedbackModal()" style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 16px; font-weight: 700; cursor: pointer;">Tutup</button>
     </div>
 </div>
 
 <style>
-    @keyframes pulse-gps {
-        0% { transform: scale(0.6); opacity: 1; }
-        100% { transform: scale(2.5); opacity: 0; }
-    }
-    .animate-spin {
-        animation: spin 1s infinite linear;
-    }
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    
-    /* Modal show animation classes */
-    #feedback-modal.show {
-        opacity: 1 !important;
-    }
-    #feedback-modal.show .glass-card {
-        transform: scale(1) !important;
-    }
+    #feedback-modal.show { opacity: 1 !important; }
+    #feedback-modal.show .radical-card { transform: scale(1) !important; }
 </style>
 @endsection
 
 @section('scripts')
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
-    // QR Scanner Logic
+    // QR Scanner
     let html5QrCode = null;
-
     function startScanner() {
         document.getElementById('reader').style.display = 'block';
         if (!html5QrCode) {
             html5QrCode = new Html5Qrcode("reader");
             html5QrCode.start(
                 { facingMode: "environment" },
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 }
-                },
+                { fps: 10, qrbox: { width: 250, height: 250 } },
                 onScanSuccess,
                 onScanFailure
-            ).catch((err) => {
-                alert("Kamera tidak dapat diakses atau tidak ditemukan.");
-                console.error(err);
-            });
+            ).catch(err => alert("Kamera error."));
         }
     }
 
-    function onScanSuccess(decodedText, decodedResult) {
+    function onScanSuccess(decodedText) {
         if (decodedText.includes('ref=posko_qr') || decodedText === 'posko_qr') {
-            html5QrCode.stop().then(() => {
-                html5QrCode.clear();
-            }).catch((err) => {
-                console.error(err);
-            });
-            
+            html5QrCode.stop().then(() => html5QrCode.clear());
             document.getElementById('qr_data').value = 'posko_qr';
             document.getElementById('scan-container').style.display = 'none';
             document.getElementById('scan-success-container').style.display = 'flex';
-            
-            const overlay = document.getElementById('form-overlay');
-            if (overlay) overlay.style.display = 'none';
-            
             document.getElementById('btn-masuk').disabled = false;
             document.getElementById('btn-pulang').disabled = false;
         } else {
             alert('QR Code tidak valid!');
         }
     }
+    function onScanFailure() {}
 
-    function onScanFailure(error) {
-        // Handle scan failure silently
-    }
-
-    // KKN Location Configuration passed from controller
-    const poskoConfig = {
-        lat: {{ $settings['latitude'] }},
-        lng: {{ $settings['longitude'] }},
-        radius: {{ $settings['radius'] }}
-    };
-
-    // User Location state
-    let userLocation = {
-        lat: null,
-        lng: null,
-        distance: null,
-        inside: false,
-        ready: false
-    };
-    
+    // GPS Logic
+    const poskoConfig = { lat: {{ $settings['latitude'] }}, lng: {{ $settings['longitude'] }}, radius: {{ $settings['radius'] }} };
+    let userLocation = { ready: false };
     let watchId = null;
 
-    // Start location tracking
-    document.addEventListener('DOMContentLoaded', () => {
-        startTrackingLocation();
-    });
+    document.addEventListener('DOMContentLoaded', startTrackingLocation);
 
-    // Haversine distance formula in JS
     function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371000; // Earth radius in meters
+        const R = 6371000;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = 
-            Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return R * c; // meters
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     }
 
-    // Continuous browser tracking
     function startTrackingLocation() {
-        if (!navigator.geolocation) {
-            updateGpsWidget(false, "GPS Tidak Didukung", "Browser Anda tidak mendukung deteksi lokasi.");
-            return;
-        }
-
-        const gpsOptions = {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 0
-        };
-
-        // Watch location
+        if (!navigator.geolocation) { updateRadar(false, "Tidak Didukung", "Browser menolak GPS"); return; }
         watchId = navigator.geolocation.watchPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                const dist = getDistance(lat, lng, poskoConfig.lat, poskoConfig.lng);
+            (pos) => {
+                const dist = getDistance(pos.coords.latitude, pos.coords.longitude, poskoConfig.lat, poskoConfig.lng);
                 const inside = dist <= poskoConfig.radius;
-
-                userLocation = {
-                    lat: lat,
-                    lng: lng,
-                    distance: dist,
-                    inside: inside,
-                    ready: true
-                };
-
-                updateGpsWidget(true, 
-                    inside ? "Lokasi Siap (Di Dalam Radius)" : "Lokasi Siap (Di Luar Radius)",
-                    inside ? `Jarak Anda: ${dist.toFixed(1)} meter dari posko KKN.` : `Jarak Anda: ${dist.toFixed(1)} meter dari posko. Maksimal: ${poskoConfig.radius}m.`,
-                    inside,
-                    dist
-                );
+                userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude, distance: dist, inside: inside, ready: true };
+                updateRadar(true, inside ? "Target Terkunci" : "Di Luar Jangkauan", `Jarak: ${dist.toFixed(1)}m / ${poskoConfig.radius}m`, inside);
             },
-            (error) => {
-                console.error("Kesalahan lokasi:", error);
-                let message = "Akses GPS Gagal";
-                let desc = "Gagal membaca lokasi. Pastikan GPS aktif dan berikan izin.";
-                if (error.code === error.PERMISSION_DENIED) {
-                    desc = "Izin lokasi diblokir. Harap aktifkan izin lokasi di pengaturan browser Anda.";
-                }
-                userLocation.ready = false;
-                updateGpsWidget(false, message, desc);
-            },
-            gpsOptions
+            (err) => { userLocation.ready = false; updateRadar(false, "Sinyal Hilang", "Aktifkan GPS Anda"); },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
         );
     }
 
-    // Manual refresh for user location
     function refreshLocation() {
         if (!navigator.geolocation) return;
-        
-        // Stop current tracking
-        if (watchId !== null) {
-            navigator.geolocation.clearWatch(watchId);
-            watchId = null;
-        }
-        
-        // UI Feedback
-        const btnIcon = document.querySelector('button[onclick="refreshLocation()"] i');
-        if (btnIcon) btnIcon.classList.add('animate-spin');
-        updateGpsWidget(true, "Memperbarui Lokasi...", "Sedang mencari sinyal GPS terbaru...", false, 0);
-        document.getElementById('gps-distance-badge').style.display = 'none';
-
-        // Restart tracking after brief delay for visual feedback
-        setTimeout(() => {
-            startTrackingLocation();
-            if (btnIcon) btnIcon.classList.remove('animate-spin');
-        }, 800);
+        if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+        const btn = document.querySelector('.icon-spin-target');
+        btn.classList.add('animate-spin');
+        updateRadar(true, "Memindai...", "Mencari kordinat presisi", false, true);
+        setTimeout(() => { startTrackingLocation(); btn.classList.remove('animate-spin'); }, 1000);
     }
 
-    function updateGpsWidget(success, title, desc, inside = false, distance = null) {
-        const indicator = document.getElementById('gps-indicator');
-        const titleEl = document.getElementById('gps-status-title');
-        const descEl = document.getElementById('gps-status-desc');
-        const badge = document.getElementById('gps-distance-badge');
+    function updateRadar(success, title, desc, inside = false, scanning = false) {
+        document.getElementById('gps-status-title').innerText = title;
+        document.getElementById('gps-distance-text').innerText = desc;
+        
+        const dot = document.getElementById('radar-dot');
+        const pulse = document.getElementById('radar-pulse');
+        const sweep = document.getElementById('radar-sweep');
 
-        titleEl.innerText = title;
-        descEl.innerText = desc;
+        if (scanning) {
+            dot.style.background = '#f59e0b'; dot.style.boxShadow = '0 0 20px #f59e0b';
+            pulse.style.borderColor = '#f59e0b';
+            sweep.style.display = 'block';
+            sweep.style.background = 'linear-gradient(45deg, rgba(245, 158, 11, 0.8), transparent)';
+            return;
+        }
+
+        sweep.style.display = inside ? 'block' : 'none';
 
         if (success) {
             if (inside) {
-                indicator.style.backgroundColor = 'var(--success)';
-                indicator.style.boxShadow = '0 0 15px var(--success)';
-                document.getElementById('gps-pulse').style.borderColor = 'var(--success)';
-                
-                badge.style.display = 'block';
-                badge.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
-                badge.style.color = 'var(--success-hover)';
-                badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-                badge.innerText = `${distance.toFixed(0)}m`;
+                dot.style.background = '#10b981'; dot.style.boxShadow = '0 0 30px #10b981';
+                pulse.style.borderColor = '#10b981';
+                sweep.style.background = 'linear-gradient(45deg, rgba(16, 185, 129, 0.8), transparent)';
             } else {
-                indicator.style.backgroundColor = 'var(--danger)';
-                indicator.style.boxShadow = '0 0 15px var(--danger)';
-                document.getElementById('gps-pulse').style.borderColor = 'var(--danger)';
-                
-                badge.style.display = 'block';
-                badge.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
-                badge.style.color = 'var(--danger)';
-                badge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
-                badge.innerText = `${distance.toFixed(0)}m`;
+                dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 30px #ef4444';
+                pulse.style.borderColor = '#ef4444';
             }
         } else {
-            indicator.style.backgroundColor = 'var(--danger)';
-            indicator.style.boxShadow = '0 0 15px var(--danger)';
-            document.getElementById('gps-pulse').style.borderColor = 'var(--danger)';
+            dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 20px #ef4444';
+            pulse.style.borderColor = '#ef4444';
         }
     }
 
-    // Submit Attendance directly using url token
     function submitAttendance(action) {
-        const qrData = document.getElementById('qr_data').value;
+        if (!document.getElementById('qr_data').value) { alert("QR Code dibutuhkan."); return; }
+        if (!userLocation.ready) { alert("Tunggu GPS mengunci lokasi."); return; }
+        if (!userLocation.inside) { alert(`Jarak Anda ${userLocation.distance.toFixed(1)}m. Harus dalam radius ${poskoConfig.radius}m.`); return; }
 
-        // 2. Barcode Token check
-        if (!qrData) {
-            alert("Barcode/QR Code tidak terdeteksi. Silakan scan ulang QR Code di proyektor admin.");
-            return;
-        }
-
-        // 3. Location Check
-        if (!userLocation.ready) {
-            alert("Lokasi GPS Anda belum siap. Pastikan izin lokasi aktif dan tunggu beberapa saat.");
-            return;
-        }
-
-        if (!userLocation.inside) {
-            alert(`Anda berada di luar jangkauan posko KKN! Jarak Anda: ${userLocation.distance.toFixed(1)} meter (Maksimal radius: ${poskoConfig.radius}m). Silakan dekati posko.`);
-            return;
-        }
-
-        // Show loading state
-        showFeedbackModal(true, "Memproses Presensi...", "Mengirim data presensi ke server. Harap tunggu.", true);
-
-        // POST request to backend
+        showModal(true, "Memproses...", "Otentikasi lokasi", true);
+        
         fetch("/attendance", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                latitude: userLocation.lat,
-                longitude: userLocation.lng,
-                action: action,
-                qr_data: qrData
-            })
-        })
-        .then(response => response.json().then(data => ({ status: response.status, body: data })))
-        .then(res => {
-            if (res.status === 200) {
-                // Success
-                showFeedbackModal(false, `Absen ${action === 'masuk' ? 'Masuk' : 'Pulang'} Sukses!`, res.body.message, false, true);
-            } else {
-                // Error
-                showFeedbackModal(false, "Absensi Gagal", res.body.message || "Terjadi kesalahan pada server.", false, false);
-            }
-        })
-        .catch(err => {
-            console.error("Error submit attendance:", err);
-            showFeedbackModal(false, "Kesalahan Jaringan", "Gagal menghubungi server. Periksa koneksi internet Anda.", false, false);
-        });
+            headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+            body: JSON.stringify({ latitude: userLocation.lat, longitude: userLocation.lng, action: action, qr_data: document.getElementById('qr_data').value })
+        }).then(r => r.json().then(d => ({s: r.status, b: d}))).then(res => {
+            if (res.s === 200) showModal(false, "Berhasil!", res.b.message, false, true);
+            else showModal(false, "Gagal", res.b.message || "Error", false, false);
+        }).catch(err => showModal(false, "Error", "Jaringan terputus.", false, false));
     }
 
-    function showFeedbackModal(isLoading, title, message, spinner = false, isSuccess = true) {
+    function showModal(loading, title, message, spinner, success=true) {
         const modal = document.getElementById('feedback-modal');
         modal.style.display = 'flex';
-        // Small delay to allow display block to render before applying opacity class for transition
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-        
+        setTimeout(() => modal.classList.add('show'), 10);
         document.getElementById('feedback-title').innerText = title;
         document.getElementById('feedback-message').innerText = message;
-
-        const iconContainer = document.getElementById('feedback-icon-container');
-        iconContainer.innerHTML = '';
-
+        
+        const icon = document.getElementById('feedback-icon-container');
         if (spinner) {
-            iconContainer.style.backgroundColor = 'var(--primary-soft)';
-            iconContainer.style.color = 'var(--primary)';
-            iconContainer.innerHTML = '<i data-lucide="loader" class="animate-spin" style="width: 38px; height: 38px;"></i>';
-        } else if (isSuccess) {
-            iconContainer.style.backgroundColor = 'var(--success-light)';
-            iconContainer.style.color = 'var(--success)';
-            iconContainer.innerHTML = '<i data-lucide="check" style="width: 38px; height: 38px; stroke-width: 3px;"></i>';
+            icon.style.background = 'rgba(255,255,255,0.1)'; icon.style.color = 'white';
+            icon.innerHTML = '<i data-lucide="loader" class="animate-spin" style="width: 40px; height: 40px;"></i>';
+        } else if (success) {
+            icon.style.background = 'rgba(16, 185, 129, 0.2)'; icon.style.color = '#34d399';
+            icon.innerHTML = '<i data-lucide="check" style="width: 40px; height: 40px;"></i>';
         } else {
-            iconContainer.style.backgroundColor = 'var(--danger-light)';
-            iconContainer.style.color = 'var(--danger)';
-            iconContainer.innerHTML = '<i data-lucide="x" style="width: 38px; height: 38px; stroke-width: 3px;"></i>';
+            icon.style.background = 'rgba(239, 68, 68, 0.2)'; icon.style.color = '#f87171';
+            icon.innerHTML = '<i data-lucide="x" style="width: 40px; height: 40px;"></i>';
         }
         lucide.createIcons();
     }
-
     function closeFeedbackModal() {
         const modal = document.getElementById('feedback-modal');
         modal.classList.remove('show');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300); // Wait for transition to finish
+        setTimeout(() => modal.style.display = 'none', 300);
     }
 </script>
+<style>
+    .animate-spin { animation: spin 1s infinite linear; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
 @endsection
