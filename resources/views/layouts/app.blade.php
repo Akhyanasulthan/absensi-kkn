@@ -619,12 +619,12 @@
                         <i data-lucide="user"></i> Admin Panel
                     </a>
                 @else
-                    <a href="{{ route('user.logout') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); border-radius: 12px;" onclick="window.location.href='{{ route('user.logout') }}'; return false;">
+                    <a href="{{ route('user.logout') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); border-radius: 12px;">
                         <i data-lucide="log-out"></i> Logout
                     </a>
                 @endif
             @else
-                <a href="{{ route('admin.login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
+                <a href="{{ route('login') }}" class="btn btn-outline btn-sm" style="padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 12px;">
                     <i data-lucide="log-in"></i> Login
                 </a>
             @endif
