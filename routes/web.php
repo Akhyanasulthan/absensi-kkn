@@ -19,7 +19,7 @@ Route::middleware(['auth'])->group(function () {
 // Unified Authentication Routes
 Route::get('/login', [AdminController::class, 'showLogin'])->name('login');
 Route::post('/login', [AdminController::class, 'login'])->name('login.submit');
-Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [AdminController::class, 'logout'])->name('logout');
 
 // Backwards compatibility redirects for old URLs
 Route::get('/admin/login', function () { return redirect()->route('login'); })->name('admin.login');
