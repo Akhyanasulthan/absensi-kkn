@@ -28,7 +28,7 @@ class AdminController extends Controller implements HasMiddleware
                     return redirect()->route('user.index');
                 }
                 return $next($request);
-            }, except: ['showLogin', 'login']),
+            }, except: ['showLogin', 'login', 'logout']),
         ];
     }
 
