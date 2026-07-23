@@ -144,8 +144,21 @@
                                     <input type="hidden" name="check_out" value="16:00">
                                     <button type="submit" class="toy-btn toy-btn-small" style="background: var(--woody-yellow); color: var(--woody-brown); border-color: var(--woody-brown); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Pulangkan</button>
                                 </form>
+                                <form action="{{ route('admin.logs.cancel') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan absen masuk? Data kehadiran hari ini akan dihapus.');">
+                                    @csrf
+                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                    <input type="hidden" name="date" value="{{ $log->date }}">
+                                    <input type="hidden" name="type" value="check_in">
+                                    <button type="submit" class="toy-btn toy-btn-small toy-btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none; margin-left: 0.25rem;">Batal Hadir</button>
+                                </form>
                             @else
-                                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">Selesai</span>
+                                <form action="{{ route('admin.logs.cancel') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan absen pulang? Jam pulang akan dihapus.');">
+                                    @csrf
+                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                    <input type="hidden" name="date" value="{{ $log->date }}">
+                                    <input type="hidden" name="type" value="check_out">
+                                    <button type="submit" class="toy-btn toy-btn-small toy-btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Batal Pulang</button>
+                                </form>
                             @endif
                         </td>
                     </tr>

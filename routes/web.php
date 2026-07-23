@@ -35,8 +35,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::get('/admin/logs', [AdminController::class, 'weeklyLogs'])->name('admin.logs');
     Route::post('/admin/logs/manual', [AdminController::class, 'storeManualAttendance'])->name('admin.logs.manual');
+    Route::post('/admin/logs/cancel', [AdminController::class, 'cancelAttendance'])->name('admin.logs.cancel');
     Route::get('/admin/logs/export/excel', [AdminController::class, 'exportExcel'])->name('admin.logs.export.excel');
     Route::get('/admin/logs/export/pdf', [AdminController::class, 'exportPdf'])->name('admin.logs.export.pdf');
+
+    Route::get('/admin/report', [AdminController::class, 'weeklyReport'])->name('admin.report');
+    Route::get('/admin/report/export', [AdminController::class, 'exportWeeklyReport'])->name('admin.report.export');
 
     // Admin Students CRUD
     Route::get('/admin/students', [AdminController::class, 'studentsIndex'])->name('admin.students');

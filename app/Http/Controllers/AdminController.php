@@ -215,6 +215,63 @@ class AdminController extends Controller implements HasMiddleware
     }
 
     /**
+     * Weekly Report View
+     */
+    public function weeklyReport(Request $request)
+    {
+        $now = Carbon::now('Asia/Jakarta');
+        $endDate = $request->get('end_date', $now->toDateString());
+        $startDate = $request->get('start_date', Carbon::parse($endDate)->subDays(6)->toDateString());
+
+        $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
+        
+        $attendances = Attendance::whereBetween('date', [$startDate, $endDate])
+            ->get()
+            ->groupBy('name');
+
+        $report = collect();
+        foreach ($students as $student) {
+            $studentAtts = $attendances->get($student->name, collect());
+            
+            $present = $studentAtts->where('status', 'Present')->count();
+            $late = $studentAtts->where('status', 'Late')->count();
+            $checkoutOnly = $studentAtts->where('status', 'Checkout Only')->count();
+            $totalDays = Carbon::parse($startDate)->diffInDays(Carbon::parse($endDate)) + 1;
+            
+            $attended = $present + $late + $checkoutOnly;
+            $absent = $totalDays - $attended;
+
+            $report->push((object)[
+                'name' => $student->name,
+                'division' => $student->division,
+                'present' => $present,
+                'late' => $late,
+                'checkout_only' => $checkoutOnly,
+                'absent' => $absent,
+                'total_attended' => $attended,
+                'total_days' => $totalDays,
+            ]);
+        }
+
+        return view('admin.weekly_report', compact('startDate', 'endDate', 'report'));
+    }
+
+    /**
+     * Export Weekly Report to Excel
+     */
+    public function exportWeeklyReport(Request $request)
+    {
+        $startDate = $request->get('start_date');
+        $endDate = $request->get('end_date');
+
+        if (!$startDate || !$endDate) {
+            return redirect()->back()->with('error', 'Pilih rentang tanggal terlebih dahulu.');
+        }
+
+        return Excel::download(new \App\Exports\WeeklyReportExport($startDate, $endDate), "laporan_mingguan_{$startDate}_sampai_{$endDate}.xlsx");
+    }
+
+    /**
      * Store manual attendance.
      */
     public function storeManualAttendance(Request $request)
@@ -269,6 +326,40 @@ class AdminController extends Controller implements HasMiddleware
         }
 
         return redirect()->back()->with('success', 'Absensi manual berhasil disimpan!');
+    }
+
+    /**
+     * Cancel attendance.
+     */
+    public function cancelAttendance(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:users,id',
+            'date' => 'required|date',
+            'type' => 'required|in:check_in,check_out',
+        ]);
+
+        $student = User::findOrFail($request->student_id);
+        $attendance = Attendance::where('name', $student->name)
+            ->where('division', $student->division)
+            ->where('date', $request->date)
+            ->first();
+
+        if (!$attendance) {
+            return redirect()->back()->withErrors(['error' => 'Data absensi tidak ditemukan.']);
+        }
+
+        if ($request->type === 'check_out') {
+            $attendance->check_out = null;
+            $attendance->status = 'Present';
+            $attendance->save();
+            return redirect()->back()->with('success', 'Absensi pulang berhasil dibatalkan!');
+        } elseif ($request->type === 'check_in') {
+            $attendance->delete();
+            return redirect()->back()->with('success', 'Absensi masuk berhasil dibatalkan (data hari ini dihapus)!');
+        }
+
+        return redirect()->back();
     }
 
     /**

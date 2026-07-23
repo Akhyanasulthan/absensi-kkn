@@ -498,6 +498,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.report') }}" class="sidebar-link {{ Route::is('admin.report') ? 'active' : '' }}">
+                            <i data-lucide="bar-chart-2"></i> Laporan
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.students') }}" class="sidebar-link {{ Route::is('admin.students') ? 'active' : '' }}">
                             <i data-lucide="users"></i> Pemain
                         </a>
