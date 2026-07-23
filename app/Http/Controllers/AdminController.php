@@ -351,12 +351,24 @@ class AdminController extends Controller implements HasMiddleware
 
         if ($request->type === 'check_out') {
             $attendance->check_out = null;
-            $attendance->status = 'Present';
-            $attendance->save();
-            return redirect()->back()->with('success', 'Absensi pulang berhasil dibatalkan!');
+            if (!$attendance->check_in) {
+                $attendance->delete();
+                return redirect()->back()->with('success', 'Absensi pulang berhasil dibatalkan (data dihapus)!');
+            } else {
+                // Biarkan status yang lama (Present atau Late), jangan diubah paksa.
+                $attendance->save();
+                return redirect()->back()->with('success', 'Absensi pulang berhasil dibatalkan!');
+            }
         } elseif ($request->type === 'check_in') {
-            $attendance->delete();
-            return redirect()->back()->with('success', 'Absensi masuk berhasil dibatalkan (data hari ini dihapus)!');
+            $attendance->check_in = null;
+            if (!$attendance->check_out) {
+                $attendance->delete();
+                return redirect()->back()->with('success', 'Absensi masuk berhasil dibatalkan (data dihapus)!');
+            } else {
+                $attendance->status = 'Checkout Only';
+                $attendance->save();
+                return redirect()->back()->with('success', 'Absensi masuk berhasil dibatalkan!');
+            }
         }
 
         return redirect()->back();
