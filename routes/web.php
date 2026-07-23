@@ -39,8 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/logs/export/excel', [AdminController::class, 'exportExcel'])->name('admin.logs.export.excel');
     Route::get('/admin/logs/export/pdf', [AdminController::class, 'exportPdf'])->name('admin.logs.export.pdf');
 
-    Route::get('/admin/report', [AdminController::class, 'weeklyReport'])->name('admin.report');
-    Route::get('/admin/report/export', [AdminController::class, 'exportWeeklyReport'])->name('admin.report.export');
 
     // Admin Students CRUD
     Route::get('/admin/students', [AdminController::class, 'studentsIndex'])->name('admin.students');
