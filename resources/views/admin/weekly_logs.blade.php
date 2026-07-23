@@ -71,6 +71,7 @@
         <table style="width: 100%; border-collapse: separate; border-spacing: 0; text-align: left;">
             <thead>
                 <tr>
+                    <th style="width: 50px;">No</th>
                     <th>Tanggal</th>
                     <th>Nama</th>
                     <th>Divisi</th>
@@ -78,11 +79,13 @@
                     <th>Jam Pulang</th>
                     <th>Status</th>
                     <th>Rincian Lokasi</th>
+                    <th style="text-align: right;">Aksi Cepat</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($attendances as $log)
                     <tr>
+                        <td style="color: var(--text-muted); font-weight: 800;">{{ $loop->iteration }}</td>
                         <td style="font-weight: 800; color: var(--woody-brown);">
                             {{ \Carbon\Carbon::parse($log->date)->translatedFormat('d M Y') }}
                         </td>
@@ -102,7 +105,9 @@
                             <span class="badge 
                                 @if($log->status === 'Present') badge-success 
                                 @elseif($log->status === 'Late') badge-warning 
-                                @else badge-danger @endif">
+                                @elseif($log->status === 'Belum Absen') badge-secondary
+                                @else badge-danger @endif"
+                                @if($log->status === 'Belum Absen') style="background: #9CA3AF; color: white;" @endif>
                                 {{ $log->status }}
                             </span>
                         </td>
@@ -120,10 +125,33 @@
                                 @endif
                             </div>
                         </td>
+                        <td style="white-space: nowrap; text-align: right;">
+                            @if($log->status === 'Belum Absen')
+                                <form action="{{ route('admin.logs.manual') }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                    <input type="hidden" name="date" value="{{ $log->date }}">
+                                    <input type="hidden" name="status" value="Present">
+                                    <input type="hidden" name="check_in" value="08:00">
+                                    <button type="submit" class="toy-btn toy-btn-small" style="background: var(--buzz-green); border-color: var(--buzz-green-dark); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Hadirkan</button>
+                                </form>
+                            @elseif(!$log->check_out && $log->check_in)
+                                <form action="{{ route('admin.logs.manual') }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                    <input type="hidden" name="date" value="{{ $log->date }}">
+                                    <input type="hidden" name="status" value="Checkout Only">
+                                    <input type="hidden" name="check_out" value="16:00">
+                                    <button type="submit" class="toy-btn toy-btn-small" style="background: var(--woody-yellow); color: var(--woody-brown); border-color: var(--woody-brown); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Pulangkan</button>
+                                </form>
+                            @else
+                                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">Selesai</span>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
+                        <td colspan="9" style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
                             <i data-lucide="alert-circle" style="margin: 0 auto 1rem auto; display: block; width: 64px; height: 64px; opacity: 0.3; color: var(--woody-red);"></i>
                             <span style="font-family: var(--font-heading); font-size: 1.2rem;">Tidak ada data kehadiran mainan.</span>
                         </td>

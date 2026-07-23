@@ -182,11 +182,34 @@ class AdminController extends Controller implements HasMiddleware
         $selectedDate = $request->get('date', $now->toDateString());
 
         // Fetch records
-        $attendances = Attendance::where('date', $selectedDate)
-            ->orderBy('name', 'asc')
-            ->get();
+        $attendancesDb = Attendance::where('date', $selectedDate)
+            ->get()->keyBy('name');
 
         $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
+
+        $attendances = collect();
+        foreach ($students as $student) {
+            if ($attendancesDb->has($student->name)) {
+                $att = $attendancesDb->get($student->name);
+                $att->student_id = $student->id;
+                $attendances->push($att);
+            } else {
+                $attendances->push((object)[
+                    'id' => null,
+                    'student_id' => $student->id,
+                    'name' => $student->name,
+                    'division' => $student->division,
+                    'check_in' => null,
+                    'check_out' => null,
+                    'status' => 'Belum Absen',
+                    'date' => $selectedDate,
+                    'check_in_latitude' => null,
+                    'check_in_longitude' => null,
+                    'check_out_latitude' => null,
+                    'check_out_longitude' => null,
+                ]);
+            }
+        }
 
         return view('admin.weekly_logs', compact('selectedDate', 'attendances', 'students'));
     }

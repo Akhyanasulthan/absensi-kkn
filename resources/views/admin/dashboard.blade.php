@@ -62,6 +62,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th style="width: 50px;">No</th>
                         <th>Nama</th>
                         <th>Divisi</th>
                         <th>Jam Masuk</th>
@@ -73,6 +74,7 @@
                 <tbody>
                     @forelse ($stats['latest_activity'] as $log)
                         <tr>
+                            <td style="color: var(--text-muted); font-weight: 800;">{{ $loop->iteration }}</td>
                             <td style="font-weight: 800; color: var(--woody-blue);">{{ $log->name }}</td>
                             <td>{{ $log->division }}</td>
                             <td style="white-space: nowrap;">
@@ -105,7 +107,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
+                            <td colspan="7" style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
                                 <i data-lucide="inbox" style="margin: 0 auto 1rem auto; display: block; width: 64px; height: 64px; opacity: 0.3; color: var(--woody-blue);"></i>
                                 <span style="font-size: 1.2rem; font-family: var(--font-heading);">Tidak ada mainan yang absen hari ini.</span>
                             </td>
