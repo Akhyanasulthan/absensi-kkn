@@ -49,44 +49,49 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama</th>
+                    <th>Tanggal</th>
+                    <th>Nama Mahasiswa</th>
                     <th>Divisi</th>
-                    <th style="text-align: center;">Hadir</th>
-                    <th style="text-align: center;">Terlambat</th>
-                    <th style="text-align: center;">Pulang Saja</th>
-                    <th style="text-align: center;">Alpa</th>
-                    <th style="text-align: center;">Total Kehadiran</th>
+                    <th style="text-align: center;">Jam Masuk</th>
+                    <th style="text-align: center;">Jam Pulang</th>
+                    <th style="text-align: center;">Status</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($report as $index => $row)
+                @forelse($attendances as $index => $row)
                     <tr>
                         <td>{{ $index + 1 }}</td>
+                        <td style="font-weight: bold;">{{ \Carbon\Carbon::parse($row->date)->translatedFormat('d/m/Y') }}</td>
                         <td>
                             <div style="font-weight: 900; color: var(--woody-blue);">{{ $row->name }}</div>
                         </td>
                         <td>{{ $row->division }}</td>
                         <td style="text-align: center;">
-                            <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.2rem 0.6rem;">{{ $row->present }}</span>
+                            <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.2rem 0.6rem;">
+                                {{ $row->check_in ? \Carbon\Carbon::parse($row->check_in)->format('H:i:s') : '-' }}
+                            </span>
                         </td>
                         <td style="text-align: center;">
-                            <span class="badge badge-warning" style="font-size: 0.85rem; padding: 0.2rem 0.6rem;">{{ $row->late }}</span>
+                            <span class="badge {{ $row->check_out ? 'badge-success' : 'badge-warning' }}" style="font-size: 0.85rem; padding: 0.2rem 0.6rem;">
+                                {{ $row->check_out ? \Carbon\Carbon::parse($row->check_out)->format('H:i:s') : '-' }}
+                            </span>
                         </td>
                         <td style="text-align: center;">
-                            <span class="badge" style="background: #94A3B8; font-size: 0.85rem; padding: 0.2rem 0.6rem;">{{ $row->checkout_only }}</span>
-                        </td>
-                        <td style="text-align: center;">
-                            <span class="badge badge-danger" style="font-size: 0.85rem; padding: 0.2rem 0.6rem;">{{ $row->absent }}</span>
-                        </td>
-                        <td style="text-align: center; font-weight: 900; color: var(--woody-blue); font-size: 1.1rem;">
-                            {{ $row->total_attended }} / {{ $row->total_days }}
+                            <span class="badge 
+                                @if($row->status === 'Present') badge-success 
+                                @elseif($row->status === 'Late') badge-warning 
+                                @elseif($row->status === 'Belum Absen') badge-secondary
+                                @else badge-danger @endif"
+                                style="font-size: 0.85rem; padding: 0.2rem 0.6rem;">
+                                {{ $row->status }}
+                            </span>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 3rem;">
+                        <td colspan="7" style="text-align: center; padding: 3rem;">
                             <i data-lucide="folder-open" style="width: 48px; height: 48px; color: var(--text-muted); opacity: 0.5; margin-bottom: 1rem;"></i>
-                            <div style="color: var(--text-muted); font-family: var(--font-heading); font-size: 1.2rem;">Belum ada data mahasiswa.</div>
+                            <div style="color: var(--text-muted); font-family: var(--font-heading); font-size: 1.2rem;">Belum ada data kehadiran di rentang tanggal ini.</div>
                         </td>
                     </tr>
                 @endforelse

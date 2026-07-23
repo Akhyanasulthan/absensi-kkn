@@ -223,37 +223,13 @@ class AdminController extends Controller implements HasMiddleware
         $endDate = $request->get('end_date', $now->toDateString());
         $startDate = $request->get('start_date', Carbon::parse($endDate)->subDays(6)->toDateString());
 
-        $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
-        
+        // Mengambil data absensi yang riil sesuai rentang tanggal
         $attendances = Attendance::whereBetween('date', [$startDate, $endDate])
-            ->get()
-            ->groupBy('name');
+            ->orderBy('date', 'desc')
+            ->orderBy('name', 'asc')
+            ->get();
 
-        $report = collect();
-        foreach ($students as $student) {
-            $studentAtts = $attendances->get($student->name, collect());
-            
-            $present = $studentAtts->where('status', 'Present')->count();
-            $late = $studentAtts->where('status', 'Late')->count();
-            $checkoutOnly = $studentAtts->where('status', 'Checkout Only')->count();
-            $totalDays = Carbon::parse($startDate)->diffInDays(Carbon::parse($endDate)) + 1;
-            
-            $attended = $present + $late + $checkoutOnly;
-            $absent = $totalDays - $attended;
-
-            $report->push((object)[
-                'name' => $student->name,
-                'division' => $student->division,
-                'present' => $present,
-                'late' => $late,
-                'checkout_only' => $checkoutOnly,
-                'absent' => $absent,
-                'total_attended' => $attended,
-                'total_days' => $totalDays,
-            ]);
-        }
-
-        return view('admin.weekly_report', compact('startDate', 'endDate', 'report'));
+        return view('admin.weekly_report', compact('startDate', 'endDate', 'attendances'));
     }
 
     /**

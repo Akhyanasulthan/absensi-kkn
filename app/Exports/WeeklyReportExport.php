@@ -28,36 +28,10 @@ class WeeklyReportExport implements FromCollection, WithHeadings, WithMapping, S
 
     protected function generateReport()
     {
-        $students = User::where('role', 'user')->orderBy('name', 'asc')->get();
-        $attendances = Attendance::whereBetween('date', [$this->startDate, $this->endDate])
-            ->get()
-            ->groupBy('name');
-
-        $report = collect();
-        foreach ($students as $student) {
-            $studentAtts = $attendances->get($student->name, collect());
-            
-            $present = $studentAtts->where('status', 'Present')->count();
-            $late = $studentAtts->where('status', 'Late')->count();
-            $checkoutOnly = $studentAtts->where('status', 'Checkout Only')->count();
-            
-            $totalDays = Carbon::parse($this->startDate)->diffInDays(Carbon::parse($this->endDate)) + 1;
-            
-            $attended = $present + $late + $checkoutOnly;
-            $absent = $totalDays - $attended;
-
-            $report->push((object)[
-                'name' => $student->name,
-                'division' => $student->division,
-                'present' => $present,
-                'late' => $late,
-                'checkout_only' => $checkoutOnly,
-                'absent' => $absent,
-                'total_attended' => $attended,
-                'total_days' => $totalDays,
-            ]);
-        }
-        $this->report = $report;
+        $this->report = Attendance::whereBetween('date', [$this->startDate, $this->endDate])
+            ->orderBy('date', 'desc')
+            ->orderBy('name', 'asc')
+            ->get();
     }
 
     public function collection()
@@ -69,14 +43,12 @@ class WeeklyReportExport implements FromCollection, WithHeadings, WithMapping, S
     {
         return [
             'No',
-            'Nama',
+            'Tanggal',
+            'Nama Mahasiswa',
             'Divisi',
-            'Total Hadir',
-            'Total Terlambat',
-            'Hanya Pulang',
-            'Total Alpa (Tidak Absen)',
-            'Jumlah Kehadiran',
-            'Total Hari Kerja'
+            'Jam Masuk',
+            'Jam Pulang',
+            'Status'
         ];
     }
 
@@ -86,14 +58,12 @@ class WeeklyReportExport implements FromCollection, WithHeadings, WithMapping, S
         
         return [
             $this->iteration,
+            Carbon::parse($row->date)->format('d/m/Y'),
             $row->name,
             $row->division,
-            $row->present,
-            $row->late,
-            $row->checkout_only,
-            $row->absent,
-            $row->total_attended,
-            $row->total_days,
+            $row->check_in ? Carbon::parse($row->check_in)->format('H:i:s') : '-',
+            $row->check_out ? Carbon::parse($row->check_out)->format('H:i:s') : '-',
+            $row->status,
         ];
     }
 
