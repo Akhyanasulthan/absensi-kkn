@@ -126,40 +126,47 @@
                             </div>
                         </td>
                         <td style="white-space: nowrap; text-align: right;">
-                            @if($log->status === 'Belum Absen')
-                                <form action="{{ route('admin.logs.manual') }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
-                                    <input type="hidden" name="date" value="{{ $log->date }}">
-                                    <input type="hidden" name="status" value="Present">
-                                    <input type="hidden" name="check_in" value="08:00">
-                                    <button type="submit" class="toy-btn toy-btn-small" style="background: var(--buzz-green); border-color: var(--buzz-green-dark); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Hadirkan</button>
-                                </form>
-                            @elseif(!$log->check_out && $log->check_in)
-                                <form action="{{ route('admin.logs.manual') }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
-                                    <input type="hidden" name="date" value="{{ $log->date }}">
-                                    <input type="hidden" name="status" value="Checkout Only">
-                                    <input type="hidden" name="check_out" value="16:00">
-                                    <button type="submit" class="toy-btn toy-btn-small" style="background: var(--woody-yellow); color: var(--woody-brown); border-color: var(--woody-brown); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Pulangkan</button>
-                                </form>
-                                <form action="{{ route('admin.logs.cancel') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan absen masuk? Data kehadiran hari ini akan dihapus.');">
-                                    @csrf
-                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
-                                    <input type="hidden" name="date" value="{{ $log->date }}">
-                                    <input type="hidden" name="type" value="check_in">
-                                    <button type="submit" class="toy-btn toy-btn-small toy-btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none; margin-left: 0.25rem;">Batal Hadir</button>
-                                </form>
-                            @else
-                                <form action="{{ route('admin.logs.cancel') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan absen pulang? Jam pulang akan dihapus.');">
-                                    @csrf
-                                    <input type="hidden" name="student_id" value="{{ $log->student_id }}">
-                                    <input type="hidden" name="date" value="{{ $log->date }}">
-                                    <input type="hidden" name="type" value="check_out">
-                                    <button type="submit" class="toy-btn toy-btn-small toy-btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Batal Pulang</button>
-                                </form>
-                            @endif
+                            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                <!-- Bagian Masuk -->
+                                @if(!$log->check_in)
+                                    <form action="{{ route('admin.logs.manual') }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                        <input type="hidden" name="date" value="{{ $log->date }}">
+                                        <input type="hidden" name="status" value="Present">
+                                        <input type="hidden" name="check_in" value="08:00">
+                                        <button type="submit" class="toy-btn toy-btn-small" style="background: var(--buzz-green); border-color: var(--buzz-green-dark); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Hadirkan</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.logs.cancel') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan absen masuk?');">
+                                        @csrf
+                                        <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                        <input type="hidden" name="date" value="{{ $log->date }}">
+                                        <input type="hidden" name="type" value="check_in">
+                                        <button type="submit" class="toy-btn toy-btn-small toy-btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Batal Hadir</button>
+                                    </form>
+                                @endif
+
+                                <!-- Bagian Pulang -->
+                                @if(!$log->check_out)
+                                    <form action="{{ route('admin.logs.manual') }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                        <input type="hidden" name="date" value="{{ $log->date }}">
+                                        <input type="hidden" name="status" value="Checkout Only">
+                                        <input type="hidden" name="check_out" value="16:00">
+                                        <button type="submit" class="toy-btn toy-btn-small" style="background: var(--woody-yellow); color: var(--woody-brown); border-color: var(--woody-brown); padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Pulangkan</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.logs.cancel') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin membatalkan absen pulang?');">
+                                        @csrf
+                                        <input type="hidden" name="student_id" value="{{ $log->student_id }}">
+                                        <input type="hidden" name="date" value="{{ $log->date }}">
+                                        <input type="hidden" name="type" value="check_out">
+                                        <button type="submit" class="toy-btn toy-btn-small toy-btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-shadow: none;">Batal Pulang</button>
+                                    </form>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty
